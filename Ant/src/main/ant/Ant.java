@@ -3,8 +3,8 @@ package main.ant;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import main.graphics.Cells;
 import main.graphics.Render;
+import main.graphics.cells.Cells;
 import main.patterns.Pattern;
 
 public class Ant {

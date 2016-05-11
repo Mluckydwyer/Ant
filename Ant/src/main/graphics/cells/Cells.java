@@ -1,4 +1,4 @@
-package main.graphics;
+package main.graphics.cells;
 
 public class Cells {
 

@@ -146,7 +146,7 @@ public class DrawWindow extends Thread {
 		g.drawImage(img, 0, 0, width, height, null);
 
 		// Renders Ants
-		render.renderAnts(g);
+		render.render(g);
 
 		// Renders Graphics Object Things
 		render.renderOverlay(g, lastFPS);

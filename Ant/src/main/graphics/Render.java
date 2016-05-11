@@ -7,7 +7,10 @@ import java.util.Queue;
 
 import main.AntArt;
 import main.ant.Ant;
+import main.graphics.cells.Cells;
 import main.graphics.windows.DrawWindow;
+import main.patterns.Pattern;
+import main.patterns.Presets;
 
 public class Render {
 
@@ -15,6 +18,7 @@ public class Render {
 	private int width;
 	private int height;
 	private DrawWindow dw;
+	private Cells cells;
 
 	// Tree Stuff
 	private Queue<Ant> ants = new LinkedList<Ant>();
@@ -24,11 +28,13 @@ public class Render {
 		this.width = width;
 		this.height = height;
 		pixels = new Color[this.width][this.height];
+		cells = new Cells(this.width, this.height);
 	}
 
 	public void render(Graphics g) {
 		setAll(dw.getBackgroundColor());
 		renderRawPixles();
+		
 		drawFrame();
 	}
 
@@ -37,7 +43,9 @@ public class Render {
 	}
 
 	private void renderRawPixles() {
-
+		calculateAnts();
+		renderCells();
+		renderAnts();
 	}
 
 	private void setAll(Color color) {
@@ -60,9 +68,20 @@ public class Render {
 		}
 	}
 
-	public void renderAnts(Graphics g) {
+	private void calculateAnts() {
 		for (Ant a : ants)
-			a.renderNext(g);
+			a.renderNext(cells);
+	}
+
+	private void renderAnts() {
+		for(Ant a:ants)
+			pixels[a.getX()][a.getY()] = a.getAntColor();
+	}
+	
+	public void renderCells() {
+		for (int x = 0; x < pixels.length; x++)
+			for (int y = 0; y < pixels[x].length; y++)
+				pixels[x][y] = cells.getCells()[x][y].getColor();
 	}
 
 	public void genNewAntInCenter(Render r) {
@@ -70,7 +89,11 @@ public class Render {
 	}
 
 	public void genNewAnt(int x, int y) {
-		ants.add(new Ant(x, y));
+		genNewAnt(Presets.BASIC, x, y);
+	}
+	
+	public void genNewAnt(Pattern p, int x, int y) {
+		ants.add(new Ant(p, x, y));
 	}
 
 	public void clearAnts() {
@@ -78,9 +101,9 @@ public class Render {
 	}
 
 	public void clear() {
-		for (Color[] colorArray : pixels)
-			for (Color c : colorArray)
-				c = dw.getBackgroundColor();
+		for (int x = 0; x < pixels.length; x++)
+			for (int y = 0; y < pixels[x].length; y++)
+				pixels[x][y] = dw.getBackgroundColor();
 	}
 
 	public void terminate() {
@@ -88,12 +111,10 @@ public class Render {
 	}
 
 	public int getCenterX() {
-		// TODO Auto-generated method stub
-		return 0;
+		return (int) pixels.length / 2;
 	}
 
 	public int getCenterY() {
-		// TODO Auto-generated method stub
-		return 0;
+		return (int) pixels[0].length / 2;
 	}
 }

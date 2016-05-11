@@ -13,8 +13,8 @@ public class Presets {
 	
 	public Presets() {
 		// Basic
-		basic.add(new Step(Color.GREEN, Direction.right));
-		basic.add(new Step(Color.RED, Direction.left));
+		basic.add(new Step(Color.GREEN, Direction.RIGHT));
+		basic.add(new Step(Color.RED, Direction.LEFT));
 		
 		//Other Presets
 	}

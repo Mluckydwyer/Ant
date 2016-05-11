@@ -1,5 +1,5 @@
 package main.ant;
 
 public enum Direction {
-right,left, up, down
+RIGHT, LEFT, UP, DOWN
 }

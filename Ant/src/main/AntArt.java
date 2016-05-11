@@ -1,7 +1,7 @@
 package main;
 
-import windows.DrawWindow;
-import windows.LoadingWindow;
+import main.graphics.windows.DrawWindow;
+import main.graphics.windows.LoadingWindow;
 
 public class AntArt {
     // ---------- Variables & Objects & Setting ----------

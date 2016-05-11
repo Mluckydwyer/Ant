@@ -1,4 +1,4 @@
-package main.graphics.ant;
+package main.ant;
 
 import java.awt.Color;
 

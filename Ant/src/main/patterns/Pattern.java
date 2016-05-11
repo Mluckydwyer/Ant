@@ -1,8 +1,11 @@
-package main.graphics.ant;
+package main.patterns;
 
 import java.awt.Color;
 import java.util.Iterator;
 import java.util.LinkedList;
+
+import main.ant.Direction;
+import main.ant.Step;
 
 
 public class Pattern {

@@ -1,4 +1,4 @@
-package windows;
+package main.graphics.windows;
 
 import java.awt.Color;
 import java.awt.Graphics;

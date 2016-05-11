@@ -1,10 +1,11 @@
-package main.graphics.ant;
+package main.ant;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
 import main.graphics.Cells;
 import main.graphics.Render;
+import main.patterns.Pattern;
 
 public class Ant {
 
@@ -55,7 +56,7 @@ public class Ant {
 	}
 	
 	public void renderNext(Graphics g) {
-		Next(Cells.getCell(getX(), getY());
+		Next(Cells.getCell(getX(), getY()).get);
 	}
 
 	public int getX() {

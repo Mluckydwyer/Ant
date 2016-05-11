@@ -1,4 +1,4 @@
-package windows;
+package main.graphics.windows;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

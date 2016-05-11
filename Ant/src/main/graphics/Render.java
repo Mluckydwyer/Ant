@@ -6,8 +6,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import main.AntArt;
-import main.graphics.ant.Ant;
-import windows.DrawWindow;
+import main.ant.Ant;
+import main.graphics.windows.DrawWindow;
 
 public class Render {
 

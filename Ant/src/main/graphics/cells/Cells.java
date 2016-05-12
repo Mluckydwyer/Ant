@@ -5,11 +5,12 @@ import java.awt.Color;
 public class Cells {
 
 	private Cell[][] cells;
-	private Cell defaultCell;
+	public static Cell defaultCell;
 	
 	public Cells(int x, int y) {
 		cells = new Cell[x][y];
 		defaultCell = new Cell(Color.GRAY);
+		setAll(defaultCell);
 	}
 	
 	public void expandCells(int i) {
@@ -23,6 +24,12 @@ public class Cells {
 		for (int x = i; x < old.length; x++)
 			for (int y = i; y < old[x].length; y++)
 				cells[x][y] = old[x - i][y - i];
+	}
+	
+	private void setAll(Cell cell) {
+		for (int x = 0; x < cells.length; x++)
+			for (int y = 0; y < cells[x].length; y++)
+				cells[x][y] = cell;
 	}
 	
 	public Cell getCell(int x, int y) {

@@ -19,7 +19,8 @@ public class AntArt {
     private static final String version = "v0.1 Pre-Alpha";
     private static int FPSCap = -1; // If -1 Then There Is Not Cap Implemented
     private static boolean fullScreen = true;
-    private static boolean loadingWindow = true;
+    private static boolean loadingWindow = false;
+    private static int loadWindowLength = 3;
     
     // Testing Info
     private static boolean debug = true;
@@ -27,6 +28,7 @@ public class AntArt {
     
     // Random / Fun / Secret Settings
     private static boolean fun = true;
+    private static int loadWindowFunLength = 8;
     
     // ---------- Main Method For Whole Program ----------
     public static void main(String[] args) {
@@ -125,5 +127,13 @@ public class AntArt {
     public static boolean isDebug() {
         return debug;
     }
+
+	public static int getLoadWindowFunLength() {
+		return loadWindowFunLength;
+	}
+
+	public static int getLoadWindowLength() {
+		return loadWindowLength;
+	}
     
 }

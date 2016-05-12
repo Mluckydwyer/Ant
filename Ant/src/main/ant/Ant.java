@@ -4,8 +4,10 @@ import java.awt.Color;
 import java.awt.Point;
 
 import main.graphics.Render;
+import main.graphics.cells.Cell;
 import main.graphics.cells.Cells;
 import main.patterns.Pattern;
+import main.patterns.Presets;
 
 public class Ant {
 
@@ -14,6 +16,7 @@ public class Ant {
 	private Pattern pattern;
 	private Direction direction;
 	private Color antColor;
+	private static Pattern defaultPattern = Presets.getBASIC();
 	private boolean absolute;
 	private boolean vertical;
 
@@ -22,7 +25,7 @@ public class Ant {
 	}
 
 	public Ant(int x, int y) {
-		this(new Pattern(), x, y);
+		this(defaultPattern, x, y);
 	}
 
 	public Ant(Pattern p, int x, int y) {
@@ -123,7 +126,8 @@ public class Ant {
 		Point prevousPosition = new Point(getX(), getY());
 		Color nextColor = next(cells.getCell(getX(), getY()).getColor());
 
-		cells.getCell((int) prevousPosition.getX(), (int) prevousPosition.getY()).setColor(nextColor);
+		cells.getCells()[0][0] = new Cell(nextColor);
+		//cells.getCells()[(int) prevousPosition.getX()][(int) prevousPosition.getY()] = new Cell(nextColor);
 	}
 
 	public int getX() {

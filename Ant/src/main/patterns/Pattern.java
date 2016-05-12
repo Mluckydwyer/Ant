@@ -1,8 +1,9 @@
 package main.patterns;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.List;
 
 import main.ant.Direction;
 import main.ant.Step;
@@ -10,13 +11,13 @@ import main.ant.Step;
 
 public class Pattern {
 
-	private LinkedList<Step> steps;
+	private List<Step> steps;
 	
 	public Pattern() {
-		this.steps = new LinkedList<Step>();
+		this.steps = new ArrayList<Step>();
 	}
 	
-	public Pattern(LinkedList<Step> steps) {
+	public Pattern(List<Step> steps) {
 		this.steps = steps;
 	}
 
@@ -25,15 +26,23 @@ public class Pattern {
 	}
 	
 	public Color getNextColor(Color c) {
-		return steps.get(findColor(c) + 1).getColor();
+		int i = findColor(c);
+		
+		if (i + 1 < steps.size()) return steps.get(i + 1).getColor();
+		else return steps.get(1).getColor();
 	}
 	
 	private int findColor(Color c) {
 		Iterator<Step> it = steps.iterator();
+		int i = 0;
 		
-		for (int i = 0; it.hasNext(); i++) {
-			if (it.next().equals(c)) return i;
+		while(it.hasNext()) {
+			if (it.next().getColor().equals(c)) return i;
+			i++;
 		}
+		
+		for(int j = 0; j < steps.size(); j++)
+			if (steps.get(j).getColor().equals(c)) return j;
 		
 		return -1;
 	}

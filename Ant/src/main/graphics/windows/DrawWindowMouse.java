@@ -29,19 +29,21 @@ public class DrawWindowMouse extends DrawWindow implements MouseListener {
 
 			lastClickX = e.getX();
 			lastClickY = e.getY();
+
 			if (AntArt.isDebug())
 				System.out.println("\nMouse Left Clicked At  X: " + lastClickX + "  Y: " + lastClickY);
 
 			r.genNewAnt(lastClickX, lastClickY);
+
 			if (AntArt.isDebug())
-				System.out.println("Generating Tree At  X: " + lastClickX + "  Y: " + lastClickY);
+				System.out.println("Generating Ant At  X: " + lastClickX + "  Y: " + lastClickY);
 		}
 		else if (e.getButton() == MouseEvent.BUTTON2) {
 			if (AntArt.isDebug())
 				System.out.println("\nMouse Middle Clicked At  X: " + lastClickX + "  Y: " + lastClickY);
 
 			r.terminate();
-			
+
 			if (AntArt.isDebug())
 				System.out.println("\nClosing Program At  X: " + lastClickX + "  Y: " + lastClickY);
 		}

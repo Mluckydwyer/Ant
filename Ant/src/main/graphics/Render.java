@@ -2,8 +2,8 @@ package main.graphics;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.util.ArrayList;
+import java.util.List;
 
 import main.AntArt;
 import main.ant.Ant;
@@ -19,9 +19,10 @@ public class Render {
 	private int height;
 	private DrawWindow dw;
 	private Cells cells;
+	private int delay = 2;
 
 	// Tree Stuff
-	private Queue<Ant> ants = new LinkedList<Ant>();
+	private List<Ant> ants = new ArrayList<Ant>();
 
 	public Render(DrawWindow dw, int width, int height) {
 		this.dw = dw;
@@ -34,7 +35,7 @@ public class Render {
 	public void render(Graphics g) {
 		setAll(dw.getBackgroundColor());
 		renderRawPixles();
-		
+
 		drawFrame();
 	}
 
@@ -43,17 +44,18 @@ public class Render {
 	}
 
 	private void renderRawPixles() {
-		calculateAnts();
+		if (DrawWindow.delay >= delay) {
+			DrawWindow.delay = 0;
+			calculateAnts();
+		}
 		renderCells();
 		renderAnts();
 	}
 
 	private void setAll(Color color) {
-		for (int x = 0; x < pixels.length; x++) {
-			for (int y = 0; y < pixels[x].length; y++) {
+		for (int x = 0; x < pixels.length; x++)
+			for (int y = 0; y < pixels[x].length; y++)
 				pixels[x][y] = color;
-			}
-		}
 	}
 
 	public void renderOverlay(Graphics g, long FPS) {
@@ -74,10 +76,10 @@ public class Render {
 	}
 
 	private void renderAnts() {
-		for(Ant a:ants)
+		for (Ant a : ants)
 			pixels[a.getX()][a.getY()] = a.getAntColor();
 	}
-	
+
 	public void renderCells() {
 		for (int x = 0; x < pixels.length; x++)
 			for (int y = 0; y < pixels[x].length; y++)
@@ -89,9 +91,9 @@ public class Render {
 	}
 
 	public void genNewAnt(int x, int y) {
-		genNewAnt(Presets.BASIC, x, y);
+		genNewAnt(Presets.getBASIC(), x, y);
 	}
-	
+
 	public void genNewAnt(Pattern p, int x, int y) {
 		ants.add(new Ant(p, x, y));
 	}

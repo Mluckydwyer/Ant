@@ -29,6 +29,7 @@ public class DrawWindow extends Thread {
 	public static int width;
 	public static int height;
 	private Color backgroundColor = Color.WHITE;
+	public static int delay = 0;
 
 	// FPS Counter
 	public long lastFPS;
@@ -51,19 +52,16 @@ public class DrawWindow extends Thread {
 
 		// Sets Settings For FullSCreen Mode
 		if (AntArt.isFullScreen()) {
-			frame.setSize(Toolkit.getDefaultToolkit().getScreenSize().width,
-					Toolkit.getDefaultToolkit().getScreenSize().height);
+			frame.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
 			frame.setUndecorated(true);
 			frame.setIgnoreRepaint(true);
 			// vc.setFullScreenWindow();
 		}
 		// Sets Settings For Standard Mode
 		else {
-			frame.setSize(
-					Toolkit.getDefaultToolkit().getScreenSize().width - 200,
-					Toolkit.getDefaultToolkit().getScreenSize().height - 100);
+			frame.setSize(Toolkit.getDefaultToolkit().getScreenSize().width - 200, Toolkit.getDefaultToolkit().getScreenSize().height - 100);
 		}
-		
+
 		if (AntArt.getFPSCap() > 0) {
 			maxWaitTime = 1000 / AntArt.getFPSCap();
 			fpsCap = true;
@@ -90,39 +88,42 @@ public class DrawWindow extends Thread {
 		// Mouse Setup
 		dwm = new DrawWindowMouse(render);
 		frame.addMouseListener(dwm);
-		
+
 		// Keyboard Setup
 		dwk = new DrawWindowKeyboard(render);
 		frame.addKeyListener(dwk);
 
 		// Draw Loop
-		do {
+		while (AntArt.running) {
 			// Starts Recording Render Time
 			frameTime = System.currentTimeMillis();
-			
-			if (System.currentTimeMillis() - startRecodTime >= 1000){
+
+			if (System.currentTimeMillis() - startRecodTime >= 1000) {
 				startRecodTime = System.currentTimeMillis();
 				lastFPS = frames;
 				frames = 0;
 			}
-				
-			
+
+			// Add one to ant calculate delay counter
+			delay++;
+
 			// Renders Screen
 			render();
 
-			// Calculates FPS (Try  - Catch for catching start divide by zero)
+			// Calculates FPS (Try - Catch for catching start divide by zero)
 			try {
 				if (frameTime < maxWaitTime && fpsCap)
 					Thread.sleep(maxWaitTime - frameTime);
-				//lastFPS = 1000 / (System.currentTimeMillis() - startRecodTime);				
-			} 
+				// lastFPS = 1000 / (System.currentTimeMillis() -
+				// startRecodTime);
+			}
 			catch (Exception e) {
 				if (AntArt.isDebug())
 					e.printStackTrace();
 			}
-			
+
 			frames++;
-		} while (AntArt.running);
+		}
 
 		if (!AntArt.running)
 			System.exit(0);
@@ -220,7 +221,7 @@ public class DrawWindow extends Thread {
 	public void setPixels(int pixels[]) {
 		this.pixels = pixels;
 	}
-	
+
 	// Returns The Last FPS Recorded
 	public long getLastFPS() {
 		return lastFPS;

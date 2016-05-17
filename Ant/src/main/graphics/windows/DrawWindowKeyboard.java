@@ -25,7 +25,7 @@ public class DrawWindowKeyboard extends DrawWindow implements KeyListener {
 			
 			r.clearAnts();
 		}
-		else if (e.getKeyChar() == 'q') {
+		else if (e.getKeyChar() == 'q' || e.equals(KeyEvent.VK_ESCAPE)) {
 			if (AntArt.isDebug())
 				System.out.println("Q Key Pressed, Terminating Program");
 			

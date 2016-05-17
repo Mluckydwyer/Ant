@@ -59,14 +59,14 @@ public class Ant {
 
 		return null;
 	}
-	
+
 	private Direction nextRight(Direction d, int i) {
 		Direction tempDir = d;
-		
+
 		for (int j = 0; j < i; j++) {
 			tempDir = nextRight(tempDir);
 		}
-		
+
 		return tempDir;
 	}
 
@@ -76,49 +76,66 @@ public class Ant {
 
 		switch (dir) {
 			case RIGHT :
-				if (direction == Direction.UP || direction == Direction.LEFT)
+				System.out.println("right");
+				if (direction.equals(Direction.UP) || direction.equals(Direction.RIGHT))
 					moveValue = 1;
 				else
 					moveValue = -1;
-
+				
 				if (isVertical())
-					x += moveValue;
-				else
-					y += moveValue;
+					setX(getX() + moveValue);
+					else
+					setY(getY() + moveValue);
+				break;
 
 			case LEFT :
-				if (direction == Direction.DOWN || direction == Direction.RIGHT)
+				if (direction.equals(Direction.DOWN) || direction.equals(Direction.LEFT))
 					moveValue = 1;
 				else
 					moveValue = -1;
 
 				if (isVertical())
-					x += moveValue;
+					setX(getX() + moveValue);
 				else
-					y += moveValue;
+					setY(getY() + moveValue);
+				break;
 
 			case UP :
-				if (direction == Direction.UP || direction == Direction.RIGHT) moveValue = 1;
-				else moveValue = -1;
-				
-				if (isVertical()) y += moveValue;
-				else x += moveValue;
+				if (direction.equals(Direction.DOWN) || direction.equals(Direction.RIGHT))
+					moveValue = 1;
+				else
+					moveValue = -1;
+
+				if (isVertical())
+					setY(getY() + moveValue);
+				else
+					setX(getX() + moveValue);
+				break;
 
 			case DOWN :
-				if (direction == Direction.DOWN || direction == Direction.LEFT) moveValue = 1;
-				else moveValue = -1;
-				
-				if (isVertical()) y += moveValue;
-				else x += moveValue;
-		}
+				if (direction.equals(Direction.UP) || direction.equals(Direction.LEFT))
+					moveValue = 1;
+				else
+					moveValue = -1;
 
-		if (isAbsolute()) direction = Direction.UP;
-		else {
-			if (dir == Direction.RIGHT) direction = nextRight(direction);
-			else if (dir == Direction.LEFT) direction = nextRight(direction, 3);
-			else if (dir == Direction.DOWN) direction = nextRight(direction, 2);
+				if (isVertical())
+					setY(getY() + moveValue);
+				else
+					setX(getX() + moveValue);
+				break;
 		}
 		
+		if (isAbsolute())
+			direction = Direction.UP;
+		else {
+			if (dir == Direction.RIGHT)
+				setDirection(nextRight(direction));
+			else if (dir == Direction.LEFT)
+				setDirection(nextRight(direction, 3));
+			else if (dir == Direction.DOWN)
+				setDirection(nextRight(direction, 2));
+		}
+
 		return pattern.getNextColor(color);
 	}
 
@@ -126,16 +143,26 @@ public class Ant {
 		Point prevousPosition = new Point(getX(), getY());
 		Color nextColor = next(cells.getCell(getX(), getY()).getColor());
 
-		cells.getCells()[0][0] = new Cell(nextColor);
-		//cells.getCells()[(int) prevousPosition.getX()][(int) prevousPosition.getY()] = new Cell(nextColor);
+		cells.setCell(new Cell(nextColor), (int) prevousPosition.getX(), (int) prevousPosition.getY());
+		// cells.getCells()[0][0] = new Cell(nextColor);
+		// cells.getCells()[(int) prevousPosition.getX()][(int)
+		// prevousPosition.getY()] = new Cell(nextColor)];
 	}
 
 	public int getX() {
 		return x;
 	}
 
+	private void setX(int x) {
+		this.x = x;
+	}
+
 	public int getY() {
 		return y;
+	}
+
+	private void setY(int y) {
+		this.y = y;
 	}
 
 	public Pattern getPattern() {
@@ -145,7 +172,7 @@ public class Ant {
 	public Color getAntColor() {
 		return antColor;
 	}
-	
+
 	public void setPattern(Pattern p) {
 		this.pattern = p;
 	}
@@ -162,7 +189,7 @@ public class Ant {
 	public boolean isAbsolute() {
 		return absolute;
 	}
-	
+
 	private boolean isVertical() {
 		return vertical;
 	}

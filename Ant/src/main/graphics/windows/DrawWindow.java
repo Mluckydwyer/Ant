@@ -146,9 +146,6 @@ public class DrawWindow extends Thread {
 		render.render(g);
 		g.drawImage(img, 0, 0, width, height, null);
 
-		// Renders Ants
-		render.render(g);
-
 		// Renders Graphics Object Things
 		render.renderOverlay(g, lastFPS);
 
@@ -185,12 +182,12 @@ public class DrawWindow extends Thread {
 	// Takes 2 Dimensional Array Of Pixels And Returns A 1 Dimensional Array Of
 	// Them
 	public Color[] to1DArray(Color[][] pixels) {
-		Color pixels1D[] = new Color[width * height];
+		Color pixels1D[] = new Color[pixels.length * pixels[0].length];
 
-		for (int i = 0; i < width * height; i++) {
-			pixels1D[i] = pixels[i % width / width][i / width];
-		}
-
+		for (int x = 0; x < pixels.length; x++)
+			for (int y = 0; y < pixels[x].length; y++)
+				pixels1D[y * pixels.length + x] = pixels[x][y];
+		
 		return pixels1D;
 	}
 

@@ -19,12 +19,12 @@ public class Render {
 	private int height;
 	private DrawWindow dw;
 	private Cells cells;
-	private int delay = 2;
+	private int delay = 0;
 
 	// Tree Stuff
 	private List<Ant> ants = new ArrayList<Ant>();
 
-	public Render(DrawWindow dw, int width, int height) {
+	public Render(DrawWindow dw, int width, int height) {		
 		this.dw = dw;
 		this.width = width;
 		this.height = height;
@@ -49,7 +49,7 @@ public class Render {
 			calculateAnts();
 		}
 		renderCells();
-		renderAnts();
+		//renderAnts();
 	}
 
 	private void setAll(Color color) {
@@ -83,7 +83,7 @@ public class Render {
 	public void renderCells() {
 		for (int x = 0; x < pixels.length; x++)
 			for (int y = 0; y < pixels[x].length; y++)
-				pixels[x][y] = cells.getCells()[x][y].getColor();
+				pixels[x][y] = cells.getCell(x, y).getColor();
 	}
 
 	public void genNewAntInCenter(Render r) {

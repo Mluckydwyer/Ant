@@ -29,7 +29,7 @@ public class Cells {
 	private void setAll(Cell cell) {
 		for (int x = 0; x < cells.length; x++)
 			for (int y = 0; y < cells[x].length; y++)
-				cells[x][y] = cell;
+				this.cells[x][y] = cell;
 	}
 	
 	public Cell getCell(int x, int y) {
@@ -37,7 +37,7 @@ public class Cells {
 	}
 	
 	public void setCell(Cell cell, int x, int y) {
-		cells[x][y] = cell;
+		this.cells[x][y] = cell;
 	}
 	
 	public Cell[][] getCells() {

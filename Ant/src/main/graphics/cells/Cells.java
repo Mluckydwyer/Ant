@@ -9,7 +9,7 @@ public class Cells {
 	
 	public Cells(int x, int y) {
 		cells = new Cell[x][y];
-		defaultCell = new Cell(Color.GRAY);
+		defaultCell = new Cell(Color.BLACK);
 		setAll(defaultCell);
 	}
 	

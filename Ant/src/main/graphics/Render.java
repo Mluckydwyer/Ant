@@ -19,7 +19,8 @@ public class Render {
 	private int height;
 	private DrawWindow dw;
 	private Cells cells;
-	private int delay = 0;
+	private Pattern lastPattern;
+	private int GPS = 10000;
 
 	// Tree Stuff
 	private List<Ant> ants = new ArrayList<Ant>();
@@ -30,6 +31,8 @@ public class Render {
 		this.height = height;
 		pixels = new Color[this.width][this.height];
 		cells = new Cells(this.width, this.height);
+
+		this.lastPattern = Presets.getSquare();
 	}
 
 	public void render(Graphics g) {
@@ -44,11 +47,9 @@ public class Render {
 	}
 
 	private void renderRawPixles() {
-		if (DrawWindow.delay >= delay) {
-			DrawWindow.delay = 0;
-			for (int i = 0; i < 100; i++)
-				calculateAnts();
-		}
+		for (int i = 0; i < GPS; i++)
+			calculateAnts(this.ants.toArray());
+
 		renderCells();
 		renderAnts();
 	}
@@ -63,17 +64,22 @@ public class Render {
 		// Info
 		if (AntArt.isDrawInfo()) {
 			int tlc = 15; // Top Left Corner
-			g.setColor(Color.MAGENTA);
+			g.setColor(Color.GREEN);
 			g.drawString("Version:  " + AntArt.getVersion(), tlc, (int) (tlc * 3.5));
-			g.drawString("FPS:  " + FPS, tlc, (int) (tlc * 4.5));
-			g.drawString("Mouse X: " + DrawWindow.dwm.lastClickX, tlc, (int) (tlc * 5.5));
-			g.drawString("Mouse Y: " + DrawWindow.dwm.lastClickY, tlc, (int) (tlc * 6.5));
+			g.drawString("Last Mouse Click X: " + DrawWindow.dwm.lastClickX, tlc, (int) (tlc * 4.5));
+			g.drawString("Last Mouse Clic Y: " + DrawWindow.dwm.lastClickY, tlc, (int) (tlc * 5.5));
+
+			g.drawString("FPS:  " + FPS, tlc, (int) (tlc * 7.5));
+			g.drawString("Generations/Second:  " + GPS, tlc, (int) (tlc * 8.5));
+
+			g.drawString("Ant Count: " + ants.size(), tlc, (int) (tlc * 10.5));
+
 		}
 	}
 
-	private void calculateAnts() {
-		for (Ant a : ants)
-			a.renderNext(cells);
+	private void calculateAnts(Object[] ants) {
+		for (Object a : ants)
+			((Ant) a).renderNext(cells);
 	}
 
 	private void renderAnts() {
@@ -92,7 +98,7 @@ public class Render {
 	}
 
 	public void genNewAnt(int x, int y) {
-		genNewAnt(Presets.getBASIC(), x, y);
+		genNewAnt(lastPattern, x, y);
 	}
 
 	public void genNewAnt(Pattern p, int x, int y) {

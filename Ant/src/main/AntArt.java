@@ -16,9 +16,9 @@ public class AntArt {
     
     // Settings / General Info
     private static final String title = "Ant";
-    private static final String version = "v0.1 Pre-Alpha";
+    private static final String version = "v0.2 Alpha";
     private static int FPSCap = -1; // If -1 Then There Is Not Cap Implemented
-    private static boolean fullScreen = false;
+    private static boolean fullScreen = true;
     private static boolean loadingWindow = false;
     private static int loadWindowLength = 3;
     

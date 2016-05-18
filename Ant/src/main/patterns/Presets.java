@@ -15,29 +15,16 @@ public class Presets {
 
 	private static List<Step> holiday;
 	private static Pattern HOLIDAY;
-
-	public Presets() {
-		// Basic
-		basic = new ArrayList<Step>();
-		basic.add(new Step(Cells.defaultCell.getColor(), Direction.RIGHT));
-		basic.add(new Step(Color.GREEN, Direction.LEFT));
-
-		BASIC = new Pattern(basic);
-
-		// Holiday
-		holiday = new ArrayList<Step>();
-		holiday.add(new Step(Cells.defaultCell.getColor(), Direction.RIGHT));
-		holiday.add(new Step(Color.GREEN, Direction.LEFT));
-		holiday.add(new Step(Color.RED, Direction.RIGHT));
-
-		HOLIDAY = new Pattern(holiday);
-
-		// Other Presets
-	}
+	
+	private static List<Step> symmetry;
+	private static Pattern SYMMETRY;
+	
+	private static List<Step> square;
+	private static Pattern SQUARE;
 
 	public static Pattern getBASIC() {
-		// Basic
 		basic = new ArrayList<Step>();
+		
 		basic.add(new Step(Cells.defaultCell.getColor(), Direction.RIGHT));
 		basic.add(new Step(Color.GREEN, Direction.LEFT));
 
@@ -47,7 +34,46 @@ public class Presets {
 	}
 
 	public static Pattern getHOLIDAY() {
+		holiday = new ArrayList<Step>();
+		
+		holiday.add(new Step(Cells.defaultCell.getColor(), Direction.RIGHT));
+		holiday.add(new Step(Color.GREEN, Direction.LEFT));
+		holiday.add(new Step(Color.RED, Direction.RIGHT));
+
+		HOLIDAY = new Pattern(holiday);
+
 		return HOLIDAY;
 	}
 
+	public static Pattern getSymmetry() {
+		symmetry = new ArrayList<Step>();
+		
+		symmetry.add(new Step(Cells.defaultCell.getColor(), Direction.LEFT));
+		symmetry.add(new Step(Color.CYAN, Direction.LEFT));
+		symmetry.add(new Step(Color.MAGENTA, Direction.RIGHT));
+		symmetry.add(new Step(Color.GREEN, Direction.RIGHT));
+
+		SYMMETRY = new Pattern(symmetry);
+
+		return SYMMETRY;
+	}
+	
+	public static Pattern getSquare() {
+		square = new ArrayList<Step>();
+		
+		square.add(new Step(Cells.defaultCell.getColor(), Direction.LEFT));
+		square.add(new Step(Color.CYAN, Direction.RIGHT));
+		square.add(new Step(Color.MAGENTA, Direction.RIGHT));
+		square.add(new Step(Color.GREEN, Direction.RIGHT));
+		square.add(new Step(Color.ORANGE, Direction.RIGHT));
+		square.add(new Step(Color.PINK, Direction.RIGHT));
+		square.add(new Step(Color.RED, Direction.LEFT));
+		square.add(new Step(Color.WHITE, Direction.LEFT));
+		square.add(new Step(Color.YELLOW, Direction.RIGHT));
+
+		SQUARE = new Pattern(square);
+
+		return SQUARE;
+	}
+	
 }

@@ -24,7 +24,7 @@ public class Render {
 	// Tree Stuff
 	private List<Ant> ants = new ArrayList<Ant>();
 
-	public Render(DrawWindow dw, int width, int height) {		
+	public Render(DrawWindow dw, int width, int height) {
 		this.dw = dw;
 		this.width = width;
 		this.height = height;
@@ -46,10 +46,11 @@ public class Render {
 	private void renderRawPixles() {
 		if (DrawWindow.delay >= delay) {
 			DrawWindow.delay = 0;
-			calculateAnts();
+			for (int i = 0; i < 100; i++)
+				calculateAnts();
 		}
 		renderCells();
-		//renderAnts();
+		renderAnts();
 	}
 
 	private void setAll(Color color) {

@@ -29,7 +29,7 @@ public class Pattern {
 		int i = findColor(c);
 		
 		if (i + 1 < steps.size()) return steps.get(i + 1).getColor();
-		else return steps.get(1).getColor();
+		else return steps.get(0).getColor();
 	}
 	
 	private int findColor(Color c) {

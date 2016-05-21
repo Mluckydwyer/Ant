@@ -5,7 +5,6 @@ import java.awt.Point;
 
 import main.graphics.Render;
 import main.graphics.cells.Cell;
-import main.graphics.cells.Cells;
 import main.patterns.Pattern;
 import main.patterns.Presets;
 
@@ -16,7 +15,7 @@ public class Ant {
 	private Pattern pattern;
 	private Direction direction;
 	private Color antColor;
-	private static Pattern defaultPattern = Presets.getBASIC();
+	private static Pattern defaultPattern = Presets.getBasic();
 	private boolean absolute;
 	private boolean vertical;
 
@@ -76,15 +75,14 @@ public class Ant {
 
 		switch (dir) {
 			case RIGHT :
-				System.out.println("right");
 				if (direction.equals(Direction.UP) || direction.equals(Direction.RIGHT))
 					moveValue = 1;
 				else
 					moveValue = -1;
-				
+
 				if (isVertical())
 					setX(getX() + moveValue);
-					else
+				else
 					setY(getY() + moveValue);
 				break;
 
@@ -124,7 +122,7 @@ public class Ant {
 					setX(getX() + moveValue);
 				break;
 		}
-		
+
 		if (isAbsolute())
 			direction = Direction.UP;
 		else {
@@ -139,21 +137,25 @@ public class Ant {
 		return pattern.getNextColor(color);
 	}
 
-	public void renderNext(Cells cells) {
-		Point prevousPosition = new Point(getX(), getY());
-		Color nextColor = next(cells.getCell(getX(), getY()).getColor());
+	public void renderNext(Render render) {
 
-		cells.setCell(new Cell(nextColor), (int) prevousPosition.getX(), (int) prevousPosition.getY());
-		// cells.getCells()[0][0] = new Cell(nextColor);
-		// cells.getCells()[(int) prevousPosition.getX()][(int)
-		// prevousPosition.getY()] = new Cell(nextColor)];
+		if(getX() >= render.cells.getCells().length || getX() < 0 || getY() >= render.cells.getCells()[1].length || getY() < 0)
+			render.zoom();
+		
+		Point prevousPosition = new Point(getX(), getY());
+		Color nextColor = next(render.cells.getCell(getX(), getY()).getColor());
+		render.cells.setCell(new Cell(nextColor), (int) prevousPosition.getX(), (int) prevousPosition.getY());
+	}
+
+	public void terminate() {
+
 	}
 
 	public int getX() {
 		return x;
 	}
 
-	private void setX(int x) {
+	public void setX(int x) {
 		this.x = x;
 	}
 
@@ -161,7 +163,7 @@ public class Ant {
 		return y;
 	}
 
-	private void setY(int y) {
+	public void setY(int y) {
 		this.y = y;
 	}
 

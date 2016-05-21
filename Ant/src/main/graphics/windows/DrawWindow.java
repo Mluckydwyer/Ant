@@ -28,8 +28,11 @@ public class DrawWindow extends Thread {
 	private int pixels[];
 	public static int width;
 	public static int height;
+	public static int widthViewable;
+	public static int heightViewable;
 	private Color backgroundColor = Color.WHITE;
 	public static int delay = 0;
+	private int defaultZoom = 100;
 
 	// FPS Counter
 	public long lastFPS;
@@ -78,6 +81,8 @@ public class DrawWindow extends Thread {
 
 		height = (int) frame.getSize().getHeight();
 		width = (int) frame.getSize().getWidth();
+		heightViewable = height;
+		widthViewable = width;
 
 		render = new Render(this, width, height);
 
@@ -187,8 +192,22 @@ public class DrawWindow extends Thread {
 		for (int x = 0; x < pixels.length; x++)
 			for (int y = 0; y < pixels[x].length; y++)
 				pixels1D[y * pixels.length + x] = pixels[x][y];
-		
+
 		return pixels1D;
+	}
+
+	public void zoomOut() {
+		zoomOut(defaultZoom);
+	}
+
+	private void zoomOut(int zoom) {
+		heightViewable += 2 * zoom;
+		widthViewable += 2 * zoom;
+
+		img = new BufferedImage(widthViewable, heightViewable, BufferedImage.TYPE_INT_ARGB);
+		setPixels(((DataBufferInt) img.getRaster().getDataBuffer()).getData());
+		
+		render.expandCells(zoom);
 	}
 
 	// ---------- Getters & Setters ----------

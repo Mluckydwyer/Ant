@@ -21,8 +21,14 @@ public class Presets {
 	
 	private static List<Step> square;
 	private static Pattern SQUARE;
+	
+	private static List<Step> highway;
+	private static Pattern HIGHWAY;
+	
+	private static List<Step> triangle;
+	private static Pattern TRIANGLE;
 
-	public static Pattern getBASIC() {
+	public static Pattern getBasic() {
 		basic = new ArrayList<Step>();
 		
 		basic.add(new Step(Cells.defaultCell.getColor(), Direction.RIGHT));
@@ -33,7 +39,7 @@ public class Presets {
 		return BASIC;
 	}
 
-	public static Pattern getHOLIDAY() {
+	public static Pattern getHoliday() {
 		holiday = new ArrayList<Step>();
 		
 		holiday.add(new Step(Cells.defaultCell.getColor(), Direction.RIGHT));
@@ -74,6 +80,16 @@ public class Presets {
 		SQUARE = new Pattern(square);
 
 		return SQUARE;
+	}
+	
+	public static Pattern getHighway() {
+		// LLRRRLRLRLLR
+		return HIGHWAY;
+	}
+	
+	public static Pattern getTriangle() {
+		// RRLLLRLLLRRR
+		return TRIANGLE;
 	}
 	
 }

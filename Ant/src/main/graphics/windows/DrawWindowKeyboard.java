@@ -31,6 +31,12 @@ public class DrawWindowKeyboard extends DrawWindow implements KeyListener {
 			
 			r.terminate();
 		}
+		else if (e.getKeyChar() == 'z') {
+			if (AntArt.isDebug())
+				System.out.println("Z Key Pressed, Zooming Out");
+			
+			r.zoom();
+		}
 
 	}
 

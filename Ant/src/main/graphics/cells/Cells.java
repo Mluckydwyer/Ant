@@ -2,6 +2,8 @@ package main.graphics.cells;
 
 import java.awt.Color;
 
+import main.AntArt;
+
 public class Cells {
 
 	private Cell[][] cells;
@@ -33,7 +35,13 @@ public class Cells {
 	}
 	
 	public Cell getCell(int x, int y) {
+		try {
 		return cells[x][y];
+		}
+		catch(ArrayIndexOutOfBoundsException e) {
+			if (AntArt.isDebug()) e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public void setCell(Cell cell, int x, int y) {

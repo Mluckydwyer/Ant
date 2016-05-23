@@ -3,6 +3,7 @@ package main.ant;
 import java.awt.Color;
 import java.awt.Point;
 
+import main.AntArt;
 import main.graphics.Render;
 import main.graphics.cells.Cell;
 import main.patterns.Pattern;
@@ -15,13 +16,9 @@ public class Ant {
 	private Pattern pattern;
 	private Direction direction;
 	private Color antColor;
-	private static Pattern defaultPattern = Presets.getBasic();
+	private static Pattern defaultPattern = Presets.getBasic(false);
 	private boolean absolute;
 	private boolean vertical;
-
-	public Ant(Render r) {
-		this(r.getCenterX(), r.getCenterY());
-	}
 
 	public Ant(int x, int y) {
 		this(defaultPattern, x, y);
@@ -140,11 +137,19 @@ public class Ant {
 	public void renderNext(Render render) {
 
 		if(getX() >= render.cells.getCells().length || getX() < 0 || getY() >= render.cells.getCells()[1].length || getY() < 0)
-			render.zoom();
+			render.zoom(this);
 		
 		Point prevousPosition = new Point(getX(), getY());
-		Color nextColor = next(render.cells.getCell(getX(), getY()).getColor());
-		render.cells.setCell(new Cell(nextColor), (int) prevousPosition.getX(), (int) prevousPosition.getY());
+		Color nextColor = new Color(255);
+		
+		try {
+			nextColor = next(render.cells.getCell(getX(), getY()).getColor());
+			render.cells.setCell(new Cell(nextColor), (int) prevousPosition.getX(), (int) prevousPosition.getY());
+		}
+		catch (Exception e) {
+			if (AntArt.isDebug()) e.printStackTrace();
+			terminate();
+		}
 	}
 
 	public void terminate() {

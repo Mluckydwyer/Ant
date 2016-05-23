@@ -2,6 +2,7 @@ package main.graphics.windows;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -148,7 +149,7 @@ public class DrawWindow extends Thread {
 		Graphics g = bs.getDrawGraphics();
 
 		// Renders Buffer Strategy Things / Direct Pixels
-		render.render(g);
+		render.render();
 		g.drawImage(img, 0, 0, width, height, null);
 
 		// Renders Graphics Object Things
@@ -241,6 +242,14 @@ public class DrawWindow extends Thread {
 	// Returns The Last FPS Recorded
 	public long getLastFPS() {
 		return lastFPS;
+	}
+	
+	public Point getMouse() {
+		return frame.getMousePosition();
+	}
+	
+	public boolean isFocus() {
+		return frame.isFocused();
 	}
 
 }

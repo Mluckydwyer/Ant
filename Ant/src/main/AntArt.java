@@ -2,6 +2,7 @@ package main;
 
 import main.graphics.windows.DrawWindow;
 import main.graphics.windows.LoadingWindow;
+import main.graphics.windows.UserControlWindow;
 
 public class AntArt {
     // ---------- Variables & Objects & Setting ----------
@@ -9,7 +10,9 @@ public class AntArt {
     // Objects
     private static LoadingWindow load;
     private static DrawWindow draw;
+    private static UserControlWindow user;
     private static Thread mainWindow;
+    private static Thread controlWindow;
     
     // Variables
     public static boolean running;
@@ -23,7 +26,7 @@ public class AntArt {
     private static int loadWindowLength = 3;
     
     // Testing Info
-    private static boolean debug = true;
+    private static boolean debug = false;
     private static boolean drawInfo = true;
     
     // Random / Fun / Secret Settings
@@ -34,7 +37,10 @@ public class AntArt {
     public static void main(String[] args) {
         running = true;
         draw = new DrawWindow();
+        user = new UserControlWindow();
         mainWindow = new Thread(draw, "Draw Window");
+        controlWindow = new Thread(user, "User Control Window");
+        
         
         // Starts Loading Window
         if (loadingWindow) {
@@ -82,6 +88,7 @@ public class AntArt {
 
         mainWindow.setDaemon(true);
         mainWindow.start();
+        controlWindow.start();
         
         try {
 			Thread.currentThread().join();

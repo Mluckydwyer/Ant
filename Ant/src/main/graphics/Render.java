@@ -8,6 +8,8 @@ import java.util.List;
 
 import main.AntArt;
 import main.ant.Ant;
+import main.ant.Direction;
+import main.ant.Step;
 import main.graphics.cells.Cell;
 import main.graphics.cells.Cells;
 import main.graphics.windows.DrawWindow;
@@ -25,7 +27,16 @@ public class Render {
 	public Cells cells;
 	private Pattern lastPattern;
 	private int GPF = 10000;
+	private boolean isResize = false;
 	private BigInteger generationCount;
+	
+	private static boolean isConstant = false;
+	private static boolean isSeizure = false;
+	private static boolean isRandomPattern = false;
+	private static boolean isRandomPreset = true;
+	private static boolean isRandomColors = false;
+	private static boolean isLimited = false;
+	private static int limit = -1;
 
 	// Tree Stuff
 	private List<Ant> ants = new ArrayList<Ant>();
@@ -40,16 +51,52 @@ public class Render {
 		cells = new Cells(this.width, this.height);
 		generationCount = new BigInteger("0");
 
-		this.lastPattern = Presets.getSquare();
+		this.lastPattern = Presets.getBasic(false);
 	}
 
-	public void render(Graphics g) {
+	public void render() {
+		doExtras();
 		setAll(dw.getBackgroundColor());
 		renderRawPixles();
 
 		drawFrame();
 	}
 
+	private void doExtras() {
+		if (isConstant && dw.isFocus()) genNewAntAtMouse();
+		if (isSeizure) cells.setDefaultCellColor(randomColor());
+	}
+
+	public static Color randomColor() {
+		return new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
+	}
+	
+	private Direction randomDirection() {
+		return null; //TODO
+	}
+	
+	private Direction randomDirectionLR() {
+		return null; //TODO
+	}
+	
+	private Pattern randomPattern(int maxSteps) {
+		List<Step> steps = new ArrayList<Step>();
+		int stepNum = (int) (maxSteps * Math.random());
+		
+		steps.add(new Step(cells.getDefaultCellColor(), randomDirectionLR()));
+		
+		for (int i = 0; i < stepNum; i++)
+			steps.add(new Step(randomColor(), randomDirection()));
+		
+		return new Pattern(steps);
+	}
+
+	
+
+	private Pattern randomPresetPattern() {
+		return Presets.getRandom(isRandomColors);
+	}
+	
 	private void drawFrame() {
 		dw.setPixels(dw.to1DArray(pixels));
 	}
@@ -74,18 +121,22 @@ public class Render {
 			g.drawString("Version:  " + AntArt.getVersion(), tlc, (int) (tlc * 3.5));
 			g.drawString("Last Mouse Click X: " + DrawWindow.dwm.lastClickX, tlc, (int) (tlc * 4.5));
 			g.drawString("Last Mouse Clic Y: " + DrawWindow.dwm.lastClickY, tlc, (int) (tlc * 5.5));
+			g.drawString("Mouse X: " + DrawWindow.dwm.mouseX, tlc, (int) (tlc * 6.5));
+			g.drawString("Mouse Y: " + DrawWindow.dwm.mouseY, tlc, (int) (tlc * 7.5));
+			
+			g.drawString("FPS:  " + FPS, tlc, (int) (tlc * 9.5));
+			g.drawString("Generations/Frame:  " + GPF, tlc, (int) (tlc * 10.5));
 
-			g.drawString("FPS:  " + FPS, tlc, (int) (tlc * 7.5));
-			g.drawString("Generations/Frame:  " + GPF, tlc, (int) (tlc * 8.5));
+			g.drawString("Ant Count: " + ants.size(), tlc, (int) (tlc * 11.5));
+			g.drawString("Ganeration: " + generationCount, tlc, (int) (tlc * 12.5));
 
-			g.drawString("Ant Count: " + ants.size(), tlc, (int) (tlc * 10.5));
-			g.drawString("Ganeration: " + generationCount, tlc, (int) (tlc * 11.5));
-
+			g.drawString("Constant Ants: " + isConstant, tlc, (int) (tlc * 13.5));
+			
 		}
 	}
 
 	private void calculateAnts(Object[] ants) {
-		for (int i = 0; i < GPF; i++)	
+		for (int i = 0; i < GPF; i++)
 			for (int j = 0; j < ants.length; j++) {
 				((Ant) ants[j]).renderNext(this);
 				generationCount = generationCount.add(new BigInteger("1"));
@@ -103,16 +154,26 @@ public class Render {
 				pixels[x][y] = cells.getCell(x, y).getColor();
 	}
 
-	public void zoom() {
-		dw.zoomOut();
+	public void zoom(Ant a) {
+		if (isResize)
+			dw.zoomOut();
+		else if (a.equals(null))
+			return;
+		else
+			removeAnt(a);
 	}
 
-	public void expandCells(int zoom) {		
+	public void removeAnt(Ant a) {
+		ants.remove(a);
+	}
+	
+	
+	public void expandCells(int zoom) {
 		Color[][] oldPix = pixels;
-		double ratio = oldPix.length/oldPix[0].length;
+		double ratio = oldPix.length / oldPix[0].length;
 		extraX += zoom * ratio;
 		extraY += zoom;
-		
+
 		ajustAnts(zoom, ratio);
 		pixels = new Color[(int) (oldPix.length + (zoom * ratio * 2))][oldPix[0].length + zoom * 2];
 
@@ -128,25 +189,30 @@ public class Render {
 	}
 
 	private void ajustAnts(int zoom, double ratio) {
-		for (Ant a: ants) {
+		for (Ant a : ants) {
 			a.setX((int) (a.getX() + (zoom * ratio)));
 			a.setY(a.getY() + zoom);
 		}
 	}
+	
+	private void genNewAntAtMouse() {
+		genNewAnt(dw.getMouse().x, dw.getMouse().y);
+	}
 
 	public void genNewAntInCenter(Render r) {
-		ants.add(new Ant(r));
+		genNewAnt(r.getCenterX(), r.getCenterY());
 	}
 
 	public void genNewAnt(int x, int y) {
+		if (isRandomPreset) lastPattern = randomPresetPattern();
 		genNewAnt(lastPattern, x, y);
 	}
 
 	public void genNewAnt(Pattern p, int x, int y) {
 		int calculatedX = ((pixels.length / DrawWindow.width) * x);
 		int calculatedY = ((pixels[0].length / DrawWindow.height) * y);
-		
-		ants.add(new Ant(p, calculatedX, calculatedY));
+
+		if (!isLimited || (isLimited && ants.size() <= limit)) ants.add(new Ant(p, calculatedX, calculatedY));
 	}
 
 	public void clearAnt(Ant a) {
@@ -173,5 +239,13 @@ public class Render {
 
 	public int getCenterY() {
 		return (int) pixels[0].length / 2;
+	}
+
+	public static boolean isConstant() {
+		return isConstant;
+	}
+
+	public static void setConstant(boolean isConstant) {
+		Render.isConstant = isConstant;
 	}
 }

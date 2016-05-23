@@ -8,10 +8,12 @@ public class Cells {
 
 	private Cell[][] cells;
 	public static Cell defaultCell;
+	private static Color defaultCellColor;
 	
 	public Cells(int x, int y) {
 		cells = new Cell[x][y];
-		defaultCell = new Cell(Color.BLACK);
+		defaultCellColor = Color.BLACK;
+		defaultCell = new Cell(defaultCellColor);
 		setAll(defaultCell);
 	}
 	
@@ -50,6 +52,14 @@ public class Cells {
 	
 	public Cell[][] getCells() {
 		return cells;
+	}
+
+	public Color getDefaultCellColor() {
+		return defaultCellColor;
+	}
+
+	public void setDefaultCellColor(Color defaultCellColor) {
+		Cells.defaultCellColor = defaultCellColor;
 	}
 
 }

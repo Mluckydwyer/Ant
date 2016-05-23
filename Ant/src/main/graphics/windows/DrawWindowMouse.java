@@ -14,6 +14,9 @@ public class DrawWindowMouse extends DrawWindow implements MouseListener, MouseM
 	// private boolean focus = false;
 	public int lastClickX = 0;
 	public int lastClickY = 0;
+	public int mouseX = 0;
+	public int mouseY = 0;
+	
 	private Render r;
 
 	public DrawWindowMouse(Render r) {
@@ -96,8 +99,8 @@ public class DrawWindowMouse extends DrawWindow implements MouseListener, MouseM
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		this.mouseX = e.getX();
+		this.mouseY = e.getY();
 	}
-	
+
 }

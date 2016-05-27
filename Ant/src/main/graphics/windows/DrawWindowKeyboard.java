@@ -5,6 +5,7 @@ import java.awt.event.KeyListener;
 
 import main.AntArt;
 import main.graphics.Render;
+import main.graphics.cells.Cells;
 
 public class DrawWindowKeyboard extends DrawWindow implements KeyListener {
 
@@ -21,7 +22,7 @@ public class DrawWindowKeyboard extends DrawWindow implements KeyListener {
 		
 		if (e.getKeyChar() == 'c') {
 			if (AntArt.isDebug())
-				System.out.println("C Key Pressed, Clearing Screen");
+				System.out.println("C Key Pressed, Clearing Ants");
 			
 			r.clearAnts();
 		}
@@ -37,7 +38,13 @@ public class DrawWindowKeyboard extends DrawWindow implements KeyListener {
 			
 			r.zoom(null);
 		}
-
+		else if (e.getKeyChar() == 'e') {
+			if (AntArt.isDebug())
+				System.out.println("E Key Pressed, Clearing Screen");
+			
+			r.cells.setAll(Cells.defaultCell);
+		}
+		
 	}
 
 	@Override

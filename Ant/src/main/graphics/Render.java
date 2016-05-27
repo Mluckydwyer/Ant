@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import main.AntArt;
 import main.ant.Ant;
@@ -29,14 +30,18 @@ public class Render {
 	private int GPF = 10000;
 	private boolean isResize = false;
 	private BigInteger generationCount;
-	
+
 	private static boolean isConstant = false;
-	private static boolean isSeizure = false;
+	private static boolean isSeizure = true;
 	private static boolean isRandomPattern = false;
-	private static boolean isRandomPreset = true;
+	private static boolean isRandomPreset = false;
 	private static boolean isRandomColors = false;
-	private static boolean isLimited = false;
-	private static int limit = -1;
+	private static boolean isRandomPresetColors = false;
+	private static boolean isLimited = true;
+	private static int limit = 25;
+	private static int minSteps = 5;
+	private int autoClearCount = 0;
+	private int autoClear = 500;
 
 	// Tree Stuff
 	private List<Ant> ants = new ArrayList<Ant>();
@@ -52,51 +57,132 @@ public class Render {
 		generationCount = new BigInteger("0");
 
 		this.lastPattern = Presets.getBasic(false);
+
+		setSettings();
+	}
+
+	private void setSettings() {
+		if (AntArt.isAuto()) {
+			isConstant = false;
+			isSeizure = false;
+			isRandomPattern = true;
+			isRandomColors = true;
+			isRandomPreset = false;
+			isRandomPresetColors = false;
+			isLimited = false;;
+
+			GPF = 100000;
+			autoClear = 600;
+
+			if (AntArt.isAutoScattered()) {
+				isLimited = true;
+				limit = 10;
+				GPF = 25000;
+				autoClear = 300;
+			}
+		}
+	}
+
+	private void auto() {
+		Random rand = new Random();
+		autoClearCount++;
+
+		if (autoClearCount < autoClear) {
+			if (AntArt.isAutoScattered())
+				genNewAnt(rand.nextInt(width), rand.nextInt(height));
+			else if (!AntArt.isAutoScattered() && autoClearCount == 1)
+				genNewAntInCenter(this);
+		}
+		else if (autoClear <= autoClearCount) {
+			clearAnts();
+			cells.setAll(Cells.defaultCell);
+			autoClearCount = 0;
+			AntArt.setIsAutoScattered(!AntArt.isAutoScattered());
+			setSettings();
+
+			return;
+		}
 	}
 
 	public void render() {
+		if (AntArt.isAuto())
+			auto();
+
 		doExtras();
-		setAll(dw.getBackgroundColor());
+		setAllPixels(dw.getBackgroundColor());
 		renderRawPixles();
 
 		drawFrame();
 	}
 
 	private void doExtras() {
-		if (isConstant && dw.isFocus()) genNewAntAtMouse();
-		if (isSeizure) cells.setDefaultCellColor(randomColor());
+		if (isConstant && dw.isFocus())
+			genNewAntAtMouse();
+		if (isSeizure)
+			cells.setDefaultCellColor(randomColor());
 	}
 
 	public static Color randomColor() {
 		return new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
 	}
-	
+
+	public static Color randomPresetColor(Color c) {
+		return Presets.getRandomColor(c);
+	}
+
+	public static Color randomPresetColor(List<Step> steps) {
+		return Presets.getRandomColor(steps);
+	}
+
 	private Direction randomDirection() {
-		return null; //TODO
+		Random rand = new Random();
+
+		if (rand.nextBoolean()) {
+			if (rand.nextBoolean())
+				return Direction.LEFT;
+			return Direction.UP;
+		}
+		else if (rand.nextBoolean())
+			return Direction.RIGHT;
+		return Direction.DOWN;
 	}
-	
+
 	private Direction randomDirectionLR() {
-		return null; //TODO
+		Random rand = new Random();
+
+		if (rand.nextBoolean())
+			return Direction.LEFT;
+		return Direction.RIGHT;
 	}
-	
+
 	private Pattern randomPattern(int maxSteps) {
 		List<Step> steps = new ArrayList<Step>();
 		int stepNum = (int) (maxSteps * Math.random());
-		
+		if (stepNum < minSteps)
+			stepNum = minSteps;
+
+		stepNum = Presets.getColors().size(); // TESTING TODO
+
 		steps.add(new Step(cells.getDefaultCellColor(), randomDirectionLR()));
-		
-		for (int i = 0; i < stepNum; i++)
-			steps.add(new Step(randomColor(), randomDirection()));
-		
+
+		if (isRandomPresetColors) {
+			for (int i = 0; i < stepNum; i++)
+				steps.add(new Step(randomPresetColor(steps.get(steps.size() - 1).getColor()), randomDirectionLR()));
+			// steps.add(new Step(randomPresetColor(steps.get(steps.size() -
+			// 1).getColor()), randomDirectionLR()));
+		}
+		else {
+			for (int i = 0; i < stepNum; i++)
+				steps.add(new Step(randomColor(), randomDirectionLR()));
+		}
+
 		return new Pattern(steps);
 	}
 
-	
-
 	private Pattern randomPresetPattern() {
-		return Presets.getRandom(isRandomColors);
+		return Presets.getRandomPreset(isRandomColors);
 	}
-	
+
 	private void drawFrame() {
 		dw.setPixels(dw.to1DArray(pixels));
 	}
@@ -107,7 +193,7 @@ public class Render {
 		// renderAnts();
 	}
 
-	private void setAll(Color color) {
+	public void setAllPixels(Color color) {
 		for (int x = 0; x < pixels.length; x++)
 			for (int y = 0; y < pixels[x].length; y++)
 				pixels[x][y] = color;
@@ -123,15 +209,19 @@ public class Render {
 			g.drawString("Last Mouse Clic Y: " + DrawWindow.dwm.lastClickY, tlc, (int) (tlc * 5.5));
 			g.drawString("Mouse X: " + DrawWindow.dwm.mouseX, tlc, (int) (tlc * 6.5));
 			g.drawString("Mouse Y: " + DrawWindow.dwm.mouseY, tlc, (int) (tlc * 7.5));
-			
+
 			g.drawString("FPS:  " + FPS, tlc, (int) (tlc * 9.5));
 			g.drawString("Generations/Frame:  " + GPF, tlc, (int) (tlc * 10.5));
 
 			g.drawString("Ant Count: " + ants.size(), tlc, (int) (tlc * 11.5));
 			g.drawString("Ganeration: " + generationCount, tlc, (int) (tlc * 12.5));
+			if (AntArt.isAuto()) {
+				g.drawString("Auto Count: " + autoClearCount, tlc, (int) (tlc * 13.5));
+				g.drawString("Auto Clear: " + autoClear, tlc, (int) (tlc * 14.5));
+			}
 
-			g.drawString("Constant Ants: " + isConstant, tlc, (int) (tlc * 13.5));
-			
+			g.drawString("Constant Ants: " + isConstant, tlc, (int) (tlc * 15.5));
+
 		}
 	}
 
@@ -165,9 +255,10 @@ public class Render {
 
 	public void removeAnt(Ant a) {
 		ants.remove(a);
+		
+		if (AntArt.isAuto() && !AntArt.isAutoScattered()) autoClearCount = autoClear;
 	}
-	
-	
+
 	public void expandCells(int zoom) {
 		Color[][] oldPix = pixels;
 		double ratio = oldPix.length / oldPix[0].length;
@@ -194,9 +285,15 @@ public class Render {
 			a.setY(a.getY() + zoom);
 		}
 	}
-	
+
 	private void genNewAntAtMouse() {
-		genNewAnt(dw.getMouse().x, dw.getMouse().y);
+		try {
+			genNewAnt(dw.getMouse().x, dw.getMouse().y);
+		}
+		catch (Exception e) {
+			if (AntArt.isDebug())
+				e.printStackTrace();
+		}
 	}
 
 	public void genNewAntInCenter(Render r) {
@@ -204,7 +301,11 @@ public class Render {
 	}
 
 	public void genNewAnt(int x, int y) {
-		if (isRandomPreset) lastPattern = randomPresetPattern();
+		if (isRandomPreset)
+			lastPattern = randomPresetPattern();
+		else if (isRandomPattern)
+			lastPattern = randomPattern(Presets.getColors().size());
+
 		genNewAnt(lastPattern, x, y);
 	}
 
@@ -212,7 +313,12 @@ public class Render {
 		int calculatedX = ((pixels.length / DrawWindow.width) * x);
 		int calculatedY = ((pixels[0].length / DrawWindow.height) * y);
 
-		if (!isLimited || (isLimited && ants.size() <= limit)) ants.add(new Ant(p, calculatedX, calculatedY));
+		if (!isLimited || (isLimited && ants.size() <= limit))
+			ants.add(new Ant(p, calculatedX, calculatedY));
+		else if (AntArt.isAuto()) {
+			ants.remove(0);
+			ants.add(new Ant(p, calculatedX, calculatedY));
+		}
 	}
 
 	public void clearAnt(Ant a) {

@@ -16,7 +16,7 @@ public class DrawWindowMouse extends DrawWindow implements MouseListener, MouseM
 	public int lastClickY = 0;
 	public int mouseX = 0;
 	public int mouseY = 0;
-	
+
 	private Render r;
 
 	public DrawWindowMouse(Render r) {
@@ -29,32 +29,34 @@ public class DrawWindowMouse extends DrawWindow implements MouseListener, MouseM
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if (e.getButton() == MouseEvent.BUTTON1) {
+		if (!AntArt.isAuto()) {
+			if (e.getButton() == MouseEvent.BUTTON1) {
 
-			lastClickX = e.getX();
-			lastClickY = e.getY();
+				lastClickX = e.getX();
+				lastClickY = e.getY();
 
-			if (AntArt.isDebug())
-				System.out.println("\nMouse Left Clicked At  X: " + lastClickX + "  Y: " + lastClickY);
+				if (AntArt.isDebug())
+					System.out.println("\nMouse Left Clicked At  X: " + lastClickX + "  Y: " + lastClickY);
 
-			r.genNewAnt(lastClickX, lastClickY);
+				r.genNewAnt(lastClickX, lastClickY);
 
-			if (AntArt.isDebug())
-				System.out.println("Generating Ant At  X: " + lastClickX + "  Y: " + lastClickY);
-		}
-		else if (e.getButton() == MouseEvent.BUTTON2) {
-			if (AntArt.isDebug())
-				System.out.println("\nMouse Middle Clicked At  X: " + lastClickX + "  Y: " + lastClickY);
+				if (AntArt.isDebug())
+					System.out.println("Generating Ant At  X: " + lastClickX + "  Y: " + lastClickY);
+			}
+			else if (e.getButton() == MouseEvent.BUTTON2) {
+				if (AntArt.isDebug())
+					System.out.println("\nMouse Middle Clicked At  X: " + lastClickX + "  Y: " + lastClickY);
 
-			r.terminate();
+				r.terminate();
 
-			if (AntArt.isDebug())
-				System.out.println("\nClosing Program At  X: " + lastClickX + "  Y: " + lastClickY);
-		}
-		else if (e.getButton() == MouseEvent.BUTTON3) {
-			if (AntArt.isDebug())
-				System.out.println("\nMouse Right Clicked At  X: " + lastClickX + "  Y: " + lastClickY);
-			// Does Nothing
+				if (AntArt.isDebug())
+					System.out.println("\nClosing Program At  X: " + lastClickX + "  Y: " + lastClickY);
+			}
+			else if (e.getButton() == MouseEvent.BUTTON3) {
+				if (AntArt.isDebug())
+					System.out.println("\nMouse Right Clicked At  X: " + lastClickX + "  Y: " + lastClickY);
+				// Does Nothing
+			}
 		}
 	}
 
@@ -81,7 +83,7 @@ public class DrawWindowMouse extends DrawWindow implements MouseListener, MouseM
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		System.out.println("test");
-		
+
 		if (e.getButton() == MouseEvent.BUTTON1) {
 
 			lastClickX = e.getX();

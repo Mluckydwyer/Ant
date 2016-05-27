@@ -30,7 +30,7 @@ public class Cells {
 				cells[x][y] = old[x - i][y - i];
 	}
 	
-	private void setAll(Cell cell) {
+	public void setAll(Cell cell) {
 		for (int x = 0; x < cells.length; x++)
 			for (int y = 0; y < cells[x].length; y++)
 				this.cells[x][y] = cell;

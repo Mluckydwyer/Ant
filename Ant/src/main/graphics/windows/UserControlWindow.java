@@ -2,13 +2,11 @@ package main.graphics.windows;
 
 import java.awt.CardLayout;
 import java.awt.Color;
-import java.awt.Toolkit;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
-import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 
 import main.AntArt;
@@ -20,33 +18,27 @@ public class UserControlWindow extends Thread {
 	private Color backgroundColor = Color.WHITE;
 
 	public UserControlWindow() {
-		
 		frame = new JFrame(AntArt.getTitle());
 		frame.setVisible(false);
+		frame.setUndecorated(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
-		frame.setLocation(0, 0);
 		frame.setBackground(backgroundColor);
-		frame.setSize((Toolkit.getDefaultToolkit().getScreenSize().width - 200) / 4, (Toolkit.getDefaultToolkit().getScreenSize().height - 100) / 4);
+		frame.setSize((DrawWindow.width - 200) / 4, (DrawWindow.height - 100) / 4);
 		frame.setAlwaysOnTop(true);
+		if (AntArt.isFullScreen()) frame.setLocation(DrawWindow.width - frame.getWidth(), 0);
+		else ;
 	}
 	
 	@Override
 	public void run() {
-		
-		//frame.add(buildMenuBar());
+		frame.getContentPane().add(render());
 		frame.setVisible(true);
 		
 		while (AntArt.running) {
-			//frame.add(render());
-			frame.getContentPane().add(render());
 			frame.repaint();
 		}
 		
-	}
-
-	private JMenuBar buildMenuBar() {
-		return new JMenuBar();
 	}
 	
 	private JPanel render() {

@@ -135,7 +135,6 @@ public class Ant {
 	}
 
 	public void renderNext(Render render) {
-
 		if(getX() >= render.cells.getCells().length || getX() < 0 || getY() >= render.cells.getCells()[1].length || getY() < 0)
 			render.zoom(this);
 		
@@ -148,12 +147,14 @@ public class Ant {
 		}
 		catch (Exception e) {
 			if (AntArt.isDebug()) e.printStackTrace();
-			terminate();
+			terminate(render);
 		}
+		
+		if (prevousPosition.equals(new Point(getX(), getY()))) render.removeAnt(this);;
 	}
 
-	public void terminate() {
-
+	public void terminate(Render render) {
+		render.removeAnt(this);
 	}
 
 	public int getX() {

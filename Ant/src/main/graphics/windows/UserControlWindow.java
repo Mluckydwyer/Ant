@@ -52,8 +52,8 @@ public class UserControlWindow extends Thread {
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == 1) Render.setConstant(true);
-				else Render.setConstant(false);
+				if (e.getStateChange() == 1) Render.setIsConstant(true);
+				else Render.setIsConstant(false);
 			}
 		});
 		jp.add(constantAnts);

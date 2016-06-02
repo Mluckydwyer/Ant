@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import main.AntArt;
 import main.ant.Direction;
 import main.ant.Step;
 
@@ -28,8 +29,15 @@ public class Pattern {
 	}
 
 	public Direction getDirection(Color c) {
-		return steps.get(findColor(c)).getDirection();
-	}
+		try {
+			return steps.get(findColor(c)).getDirection();
+		}
+		catch(Exception e) {
+			if (AntArt.isDebug()) e.printStackTrace();
+		}
+		
+		return null;
+		}
 	
 	public Color getNextColor(Color c) {
 		int i = findColor(c);

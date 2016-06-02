@@ -11,7 +11,6 @@ import main.AntArt;
 import main.ant.Ant;
 import main.ant.Direction;
 import main.ant.Step;
-import main.graphics.cells.Cell;
 import main.graphics.cells.Cells;
 import main.graphics.windows.DrawWindow;
 import main.patterns.Pattern;
@@ -28,7 +27,7 @@ public class Render {
 	public Cells cells;
 	private Pattern lastPattern;
 	private int GPF = 10000;
-	private boolean isResize = false;
+	private boolean isResize = false; // Major Lag
 	private BigInteger generationCount;
 
 	private static boolean isConstant = true;
@@ -57,10 +56,10 @@ public class Render {
 		pixels = new Color[this.width][this.height];
 		cells = new Cells(this.width, this.height);
 		generationCount = new BigInteger("0");
-		
+
 		this.lastPattern = Presets.getPresets((isRandomColors && !isRandomPresetColors ? true : false)).get(patternCycle);
 		// else this.lastPattern = randomPattern(maxSteps);
-		
+
 		setSettings();
 	}
 
@@ -72,7 +71,8 @@ public class Render {
 			isRandomColors = true;
 			isRandomPreset = false;
 			isRandomPresetColors = false;
-			isLimited = false;;
+			isLimited = false;
+			;
 
 			GPF = 100000;
 			autoClear = 600;
@@ -164,7 +164,7 @@ public class Render {
 		if (stepNum < minSteps)
 			stepNum = minSteps;
 
-		//stepNum = Presets.getColors().size(); // TESTING TODO
+		// stepNum = Presets.getColors().size(); // TESTING TODO
 
 		steps.add(new Step(cells.getDefaultCellColor(), randomDirectionLR()));
 
@@ -185,13 +185,17 @@ public class Render {
 	private Pattern randomPresetPattern() {
 		return Presets.getRandomPreset(isRandomColors);
 	}
-	
+
 	public void cyclePattern(boolean forward) {
-		if (forward) patternCycle++;
-		else patternCycle--;
-		
-		if (patternCycle == Presets.getPresets(false).size() + 2) patternCycle = 0;;
-		
+		if (forward)
+			patternCycle++;
+		else
+			patternCycle--;
+
+		if (patternCycle == Presets.getPresets(false).size() + 2)
+			patternCycle = 0;
+		;
+
 		if (patternCycle == Presets.getPresets(false).size()) {
 			lastPattern = randomPattern(maxSteps);
 		}
@@ -202,11 +206,11 @@ public class Render {
 			lastPattern = Presets.getPresets(isRandomColors).get(patternCycle);
 		}
 	}
-	
+
 	public boolean containsAnt(Ant a) {
 		return ants.contains(a);
 	}
-	
+
 	private void drawFrame() {
 		dw.setPixels(dw.to1DArray(pixels));
 	}
@@ -228,6 +232,8 @@ public class Render {
 		if (AntArt.isDrawInfo()) {
 			int tlc = 15; // Top Left Corner
 			g.setColor(Color.GREEN);
+			if (AntArt.isDebug())
+				g.drawString("Debug:  " + AntArt.isDebug(), tlc, (int) (tlc * 2.5));
 			g.drawString("Version:  " + AntArt.getVersion(), tlc, (int) (tlc * 3.5));
 			g.drawString("Last Mouse Click X: " + DrawWindow.dwm.lastClickX, tlc, (int) (tlc * 4.5));
 			g.drawString("Last Mouse Clic Y: " + DrawWindow.dwm.lastClickY, tlc, (int) (tlc * 5.5));
@@ -245,7 +251,14 @@ public class Render {
 			}
 
 			g.drawString("Constant Ants: " + isConstant, tlc, (int) (tlc * 15.5));
-			if (!AntArt.isAuto()) g.drawString("Pattern: " + lastPattern, tlc, (int) (tlc * 16.5));
+			
+			if (!AntArt.isAuto())
+				g.drawString("Pattern: " + lastPattern, tlc, (int) (tlc * 16.5));
+
+			g.drawString("Auto: " + AntArt.isAuto(), tlc, (int) (tlc * 17.5));
+			
+			if (AntArt.isAuto())
+				g.drawString("Auto Scattered: " + AntArt.isAutoScattered(), tlc, (int) (tlc * 18.5));
 
 		}
 	}
@@ -280,8 +293,9 @@ public class Render {
 
 	public void removeAnt(Ant a) {
 		ants.remove(a);
-		
-		if (AntArt.isAuto() && !AntArt.isAutoScattered()) autoClearCount = autoClear;
+
+		if (AntArt.isAuto() && !AntArt.isAutoScattered())
+			autoClearCount = autoClear;
 	}
 
 	public void expandCells(int zoom) {
@@ -338,8 +352,9 @@ public class Render {
 		int calculatedX = ((pixels.length / DrawWindow.width) * x);
 		int calculatedY = ((pixels[0].length / DrawWindow.height) * y);
 
-		if (!isLimited || (isLimited && ants.size() <= limit))
+		if (!isLimited || (isLimited && ants.size() <= limit)) {
 			ants.add(new Ant(p, calculatedX, calculatedY));
+		}
 		else if (AntArt.isAuto()) {
 			ants.remove(0);
 			ants.add(new Ant(p, calculatedX, calculatedY));
@@ -372,11 +387,15 @@ public class Render {
 		return (int) pixels[0].length / 2;
 	}
 
-	public static boolean isConstant() {
+	public boolean isConstant() {
 		return isConstant;
 	}
 
-	public static void setConstant(boolean isConstant) {
+	public static void setIsConstant(boolean isConstant) {
 		Render.isConstant = isConstant;
+	}
+	
+	public void setAutoClearCount(int i) {
+		autoClearCount = i;
 	}
 }

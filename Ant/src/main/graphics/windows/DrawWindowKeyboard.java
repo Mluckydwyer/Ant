@@ -44,6 +44,30 @@ public class DrawWindowKeyboard extends DrawWindow implements KeyListener {
 			
 			r.cells.setAll(Cells.defaultCell);
 		}
+		else if (e.getKeyChar() == 'd') {
+			if (AntArt.isDebug())
+				System.out.println("D Key Pressed, Toggling Debug");
+			
+			AntArt.setDebug(!AntArt.isDebug());
+		}
+		else if (e.getKeyChar() == 'a') {
+			if (AntArt.isDebug())
+				System.out.println("A Key Pressed, Toggling Auto");
+			
+			AntArt.setAuto(!AntArt.isAuto());
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_UP) {
+			if (AntArt.isDebug())
+				System.out.println("Up Arrow Key Pressed, Cycling Patterns Up 1");
+			
+			r.cyclePattern(true);
+		}
+		else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			if (AntArt.isDebug())
+				System.out.println("Down Arrow Key Pressed, Cycling Patterns Down 1");
+			
+			r.cyclePattern(false);
+		}
 		
 	}
 

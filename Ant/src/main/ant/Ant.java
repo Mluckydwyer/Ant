@@ -135,22 +135,29 @@ public class Ant {
 	}
 
 	public void renderNext(Render render) {
-		if(getX() >= render.cells.getCells().length || getX() < 0 || getY() >= render.cells.getCells()[1].length || getY() < 0)
+		if (getX() >= render.cells.getCells().length || getX() < 0 || getY() >= render.cells.getCells()[1].length || getY() < 0)
 			render.zoom(this);
-		
+
 		Point prevousPosition = new Point(getX(), getY());
 		Color nextColor = new Color(255);
-		
-		try {
+
+		if (getX() >= render.cells.getCells().length || getY() >= render.cells.getCells()[0].length)
+			render.removeAnt(this);
+		else if (prevousPosition.equals(new Point(getX(), getY())))
+			render.removeAnt(this);
+		if(render.containsAnt(this)) {
 			nextColor = next(render.cells.getCell(getX(), getY()).getColor());
 			render.cells.setCell(new Cell(nextColor), (int) prevousPosition.getX(), (int) prevousPosition.getY());
 		}
-		catch (Exception e) {
-			if (AntArt.isDebug()) e.printStackTrace();
-			terminate(render);
-		}
-		
-		if (prevousPosition.equals(new Point(getX(), getY()))) render.removeAnt(this);;
+
+		/*
+		 * try { if () nextColor = next(render.cells.getCell(getX(),
+		 * getY()).getColor()); render.cells.setCell(new Cell(nextColor), (int)
+		 * prevousPosition.getX(), (int) prevousPosition.getY()); } catch
+		 * (Exception e) { if (AntArt.isDebug()) e.printStackTrace();
+		 * terminate(render); }
+		 */
+
 	}
 
 	public void terminate(Render render) {

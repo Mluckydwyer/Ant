@@ -56,7 +56,7 @@ public class Presets {
 			basic.add(new Step(Render.randomColor(), Direction.LEFT));
 		}
 
-		BASIC = new Pattern(basic);
+		BASIC = new Pattern("Basic" + (random ? " [Random Colors]" : ""), basic);
 
 		return BASIC;
 	}
@@ -75,7 +75,7 @@ public class Presets {
 			holiday.add(new Step(Render.randomColor(), Direction.RIGHT));
 		}
 
-		HOLIDAY = new Pattern(holiday);
+		HOLIDAY = new Pattern("Holiday" + (random ? " [Random Colors]" : ""), holiday);
 
 		return HOLIDAY;
 	}
@@ -96,7 +96,7 @@ public class Presets {
 			symmetry.add(new Step(Render.randomColor(), Direction.RIGHT));
 		}
 
-		SYMMETRY = new Pattern(symmetry);
+		SYMMETRY = new Pattern("Symmetry" + (random ? " [Random Colors]" : ""), symmetry);
 
 		return SYMMETRY;
 	}
@@ -127,7 +127,7 @@ public class Presets {
 			square.add(new Step(Render.randomColor(), Direction.RIGHT));
 		}
 
-		SQUARE = new Pattern(square);
+		SQUARE = new Pattern("Square" + (random ? " [Random Colors]" : ""), square);
 
 		return SQUARE;
 	}
@@ -164,7 +164,7 @@ public class Presets {
 			highway.add(new Step(Render.randomColor(), Direction.RIGHT));
 		}
 
-		HIGHWAY = new Pattern(highway);
+		HIGHWAY = new Pattern("Highway" + (random ? " [Random Colors]" : ""), highway);
 
 		return HIGHWAY;
 	}
@@ -202,7 +202,7 @@ public class Presets {
 			triangle.add(new Step(Render.randomColor(), Direction.RIGHT));
 		}
 
-		TRIANGLE = new Pattern(triangle);
+		TRIANGLE = new Pattern("Triangle" + (random ? " [Random Colors]" : ""), triangle);
 
 		return TRIANGLE;
 	}
@@ -223,7 +223,7 @@ public class Presets {
 	public static Pattern getRandomPreset(boolean random) {
 		return getPresets(random).get((int) (Math.random() * (getPresets(random).size() - 1)));
 	}
-
+	
 	public static List<Color> getColors() {
 		colors = new ArrayList<Color>();
 

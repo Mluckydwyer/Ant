@@ -31,7 +31,7 @@ public class Render {
 	private boolean isResize = false;
 	private BigInteger generationCount;
 
-	private static boolean isConstant = false;
+	private static boolean isConstant = true;
 	private static boolean isSeizure = true;
 	private static boolean isRandomPattern = false;
 	private static boolean isRandomPreset = false;
@@ -40,8 +40,10 @@ public class Render {
 	private static boolean isLimited = true;
 	private static int limit = 25;
 	private static int minSteps = 5;
+	private static int maxSteps = 12;
 	private int autoClearCount = 0;
 	private int autoClear = 500;
+	private int patternCycle = 0;
 
 	// Tree Stuff
 	private List<Ant> ants = new ArrayList<Ant>();
@@ -55,9 +57,10 @@ public class Render {
 		pixels = new Color[this.width][this.height];
 		cells = new Cells(this.width, this.height);
 		generationCount = new BigInteger("0");
-
-		this.lastPattern = Presets.getBasic(false);
-
+		
+		this.lastPattern = Presets.getPresets((isRandomColors && !isRandomPresetColors ? true : false)).get(patternCycle);
+		// else this.lastPattern = randomPattern(maxSteps);
+		
 		setSettings();
 	}
 
@@ -89,7 +92,7 @@ public class Render {
 
 		if (autoClearCount < autoClear) {
 			if (AntArt.isAutoScattered())
-				genNewAnt(rand.nextInt(width), rand.nextInt(height));
+				genNewAnt(randomPattern(maxSteps), rand.nextInt(width), rand.nextInt(height));
 			else if (!AntArt.isAutoScattered() && autoClearCount == 1)
 				genNewAntInCenter(this);
 		}
@@ -161,7 +164,7 @@ public class Render {
 		if (stepNum < minSteps)
 			stepNum = minSteps;
 
-		stepNum = Presets.getColors().size(); // TESTING TODO
+		//stepNum = Presets.getColors().size(); // TESTING TODO
 
 		steps.add(new Step(cells.getDefaultCellColor(), randomDirectionLR()));
 
@@ -176,13 +179,34 @@ public class Render {
 				steps.add(new Step(randomColor(), randomDirectionLR()));
 		}
 
-		return new Pattern(steps);
+		return new Pattern("Randomly Generated Pattern", steps);
 	}
 
 	private Pattern randomPresetPattern() {
 		return Presets.getRandomPreset(isRandomColors);
 	}
-
+	
+	public void cyclePattern(boolean forward) {
+		if (forward) patternCycle++;
+		else patternCycle--;
+		
+		if (patternCycle == Presets.getPresets(false).size() + 2) patternCycle = 0;;
+		
+		if (patternCycle == Presets.getPresets(false).size()) {
+			lastPattern = randomPattern(maxSteps);
+		}
+		else if (patternCycle == Presets.getPresets(false).size() + 1) {
+			lastPattern = randomPresetPattern();
+		}
+		else {
+			lastPattern = Presets.getPresets(isRandomColors).get(patternCycle);
+		}
+	}
+	
+	public boolean containsAnt(Ant a) {
+		return ants.contains(a);
+	}
+	
 	private void drawFrame() {
 		dw.setPixels(dw.to1DArray(pixels));
 	}
@@ -221,6 +245,7 @@ public class Render {
 			}
 
 			g.drawString("Constant Ants: " + isConstant, tlc, (int) (tlc * 15.5));
+			if (!AntArt.isAuto()) g.drawString("Pattern: " + lastPattern, tlc, (int) (tlc * 16.5));
 
 		}
 	}
@@ -297,13 +322,13 @@ public class Render {
 	}
 
 	public void genNewAntInCenter(Render r) {
-		genNewAnt(r.getCenterX(), r.getCenterY());
+		genNewAnt(randomPattern(maxSteps), r.getCenterX(), r.getCenterY());
 	}
 
 	public void genNewAnt(int x, int y) {
-		if (isRandomPreset)
+		if (patternCycle == Presets.getPresets(false).size() + 1)
 			lastPattern = randomPresetPattern();
-		else if (isRandomPattern)
+		else if (patternCycle == Presets.getPresets(false).size())
 			lastPattern = randomPattern(Presets.getColors().size());
 
 		genNewAnt(lastPattern, x, y);

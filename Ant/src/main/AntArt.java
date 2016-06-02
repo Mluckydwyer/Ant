@@ -21,15 +21,15 @@ public class AntArt {
 
 	// Settings / General Info
 	private static final String title = "Ant";
-	private static final String version = "v0.2 Alpha";
+	private static final String version = "v1.1 Beta";
 	private static int FPSCap = -1; // If -1 Then There Is Not Cap Implemented
 	private static boolean fullScreen = false;
-	private static boolean loadingWindow = false;
+	private static boolean loadingWindow = true;
 	private static int loadWindowLength = 3;
 
 	// Testing Info
-	private static boolean debug = false; // debug or user present
-	private static boolean auto = true; // auto or user controlled
+	private static boolean debug = true; // debug or user present
+	private static boolean auto = false; // auto or user controlled
 	private static boolean autoScattered = false;
 	private static boolean drawInfo = true;
 
@@ -81,16 +81,18 @@ public class AntArt {
 			while (again);
 			s.close();
 		}
+		// Debug mode settings
 		else {
-			fullScreen = true;
-			autoScattered = false;
+			fullScreen = false;
+			autoScattered = true;
 			auto = true;
+			loadingWindow = false;
 		}
-
+		
 		// Present mode
 		if (!debug) {
-			if (!auto)
-				loadingWindow = true;
+			if (auto)
+				loadingWindow = false;
 			drawInfo = true;
 		}
 
@@ -195,6 +197,10 @@ public class AntArt {
 		return debug;
 	}
 
+	public static void setDebug(boolean debug) {
+		AntArt.debug = debug;
+	}
+	
 	public static int getLoadWindowFunLength() {
 		return loadWindowFunLength;
 	}
@@ -207,6 +213,10 @@ public class AntArt {
 		return auto;
 	}
 
+	public static void setAuto(boolean auto) {
+		AntArt.auto = auto;
+	}
+	
 	public static boolean isAutoScattered() {
 		return autoScattered;
 	}

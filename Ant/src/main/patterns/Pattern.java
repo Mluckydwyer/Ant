@@ -11,10 +11,16 @@ import main.ant.Step;
 
 public class Pattern {
 
+	private String name;
 	private List<Step> steps;
 	
 	public Pattern() {
 		this.steps = new ArrayList<Step>();
+	}
+	
+	public Pattern(String name, List<Step> steps) {
+		this(steps);
+		this.name = name;
 	}
 	
 	public Pattern(List<Step> steps) {
@@ -45,6 +51,10 @@ public class Pattern {
 			if (steps.get(j).getColor().equals(c)) return j;
 		
 		return -1;
+	}
+
+	public String toString() {
+		return (!name.isEmpty() ? name : "");
 	}
 	
 }

@@ -71,8 +71,7 @@ public class Render {
 			isRandomColors = true;
 			isRandomPreset = false;
 			isRandomPresetColors = false;
-			isLimited = false;
-			;
+			isLimited = false;;
 
 			GPF = 100000;
 			autoClear = 600;
@@ -164,8 +163,6 @@ public class Render {
 		if (stepNum < minSteps)
 			stepNum = minSteps;
 
-		// stepNum = Presets.getColors().size(); // TESTING TODO
-
 		steps.add(new Step(cells.getDefaultCellColor(), randomDirectionLR()));
 
 		if (isRandomPresetColors) {
@@ -193,8 +190,7 @@ public class Render {
 			patternCycle--;
 
 		if (patternCycle == Presets.getPresets(false).size() + 2)
-			patternCycle = 0;
-		;
+			patternCycle = 0;;
 
 		if (patternCycle == Presets.getPresets(false).size()) {
 			lastPattern = randomPattern(maxSteps);
@@ -231,34 +227,67 @@ public class Render {
 		// Info
 		if (AntArt.isDrawInfo()) {
 			int tlc = 15; // Top Left Corner
+			g.setColor(new Color(Cells.defaultCell.getColor().getRed(), Cells.defaultCell.getColor().getGreen(), Cells.defaultCell.getColor().getBlue(), 200));
+			g.fillRect(tlc - 10, tlc, tlc * 11, (int) (tlc * 19.5));
+
 			g.setColor(Color.GREEN);
+			g.drawString("----- Info -----", tlc, (int) (tlc * 2.5));
 			if (AntArt.isDebug())
-				g.drawString("Debug:  " + AntArt.isDebug(), tlc, (int) (tlc * 2.5));
-			g.drawString("Version:  " + AntArt.getVersion(), tlc, (int) (tlc * 3.5));
-			g.drawString("Last Mouse Click X: " + DrawWindow.dwm.lastClickX, tlc, (int) (tlc * 4.5));
-			g.drawString("Last Mouse Clic Y: " + DrawWindow.dwm.lastClickY, tlc, (int) (tlc * 5.5));
-			g.drawString("Mouse X: " + DrawWindow.dwm.mouseX, tlc, (int) (tlc * 6.5));
-			g.drawString("Mouse Y: " + DrawWindow.dwm.mouseY, tlc, (int) (tlc * 7.5));
+				g.drawString("Debug:  " + AntArt.isDebug(), tlc, (int) (tlc * 4.5));
+			g.drawString("Version:  " + AntArt.getVersion(), tlc, (int) (tlc * 5.5));
+			g.drawString("Last Mouse Click X: " + DrawWindow.dwm.lastClickX, tlc, (int) (tlc * 6.5));
+			g.drawString("Last Mouse Clic Y: " + DrawWindow.dwm.lastClickY, tlc, (int) (tlc * 7.5));
+			g.drawString("Mouse X: " + DrawWindow.dwm.mouseX, tlc, (int) (tlc * 8.5));
+			g.drawString("Mouse Y: " + DrawWindow.dwm.mouseY, tlc, (int) (tlc * 9.5));
 
-			g.drawString("FPS:  " + FPS, tlc, (int) (tlc * 9.5));
-			g.drawString("Generations/Frame:  " + GPF, tlc, (int) (tlc * 10.5));
+			g.drawString("FPS:  " + FPS, tlc, (int) (tlc * 10.5));
+			g.drawString("Generations/Frame:  " + GPF, tlc, (int) (tlc * 11.5));
 
-			g.drawString("Ant Count: " + ants.size(), tlc, (int) (tlc * 11.5));
-			g.drawString("Ganeration: " + generationCount, tlc, (int) (tlc * 12.5));
+			g.drawString("Ant Count: " + ants.size(), tlc, (int) (tlc * 12.5));
+			g.drawString("Ganeration: " + generationCount, tlc, (int) (tlc * 13.5));
 			if (AntArt.isAuto()) {
-				g.drawString("Auto Count: " + autoClearCount, tlc, (int) (tlc * 13.5));
-				g.drawString("Auto Clear: " + autoClear, tlc, (int) (tlc * 14.5));
+				g.drawString("Auto Count: " + autoClearCount, tlc, (int) (tlc * 14.5));
+				g.drawString("Auto Clear: " + autoClear, tlc, (int) (tlc * 15.5));
 			}
 
-			g.drawString("Constant Ants: " + isConstant, tlc, (int) (tlc * 15.5));
-			
-			if (!AntArt.isAuto())
-				g.drawString("Pattern: " + lastPattern, tlc, (int) (tlc * 16.5));
+			g.drawString("Constant Ants: " + isConstant, tlc, (int) (tlc * 16.5));
 
-			g.drawString("Auto: " + AntArt.isAuto(), tlc, (int) (tlc * 17.5));
-			
+			if (!AntArt.isAuto())
+				g.drawString("Pattern: " + lastPattern, tlc, (int) (tlc * 17.5));
+
+			g.drawString("Auto: " + AntArt.isAuto(), tlc, (int) (tlc * 18.5));
+
 			if (AntArt.isAuto())
-				g.drawString("Auto Scattered: " + AntArt.isAutoScattered(), tlc, (int) (tlc * 18.5));
+				g.drawString("Auto Scattered: " + AntArt.isAutoScattered(), tlc, (int) (tlc * 19.5));
+
+			// TODO TODO TODO
+			g.setColor(new Color(Cells.defaultCell.getColor().getRed(), Cells.defaultCell.getColor().getGreen(), Cells.defaultCell.getColor().getBlue(), 200));
+			g.fillRect(tlc - 10, (int) (height - (tlc * 7.5) - 10), tlc * 11, (int) (height - (tlc * 50.5)));
+			
+			// Bottom Left Corner
+			g.setColor(Color.magenta);
+			g.drawString("----- Controls -----", tlc, (int) (height - (tlc * 20.5)));
+			g.drawString("Q  -  Quit", tlc, (int) (height - (tlc * 18.5)));
+			g.drawString("E  -  Erase Screen", tlc, (int) (height - (tlc * 17.5)));
+			g.drawString("C  -  Clear All Ants From Screen", tlc, (int) (height - (tlc * 16.5)));
+			g.drawString("H  -  Toggle HUD", tlc, (int) (height - (tlc * 15.5)));
+			g.drawString("D  -  Toggle Debug", tlc, (int) (height - (tlc * 14.5)));
+			g.drawString("T  -  Toggles Seizure Mode", tlc, (int) (height - (tlc * 13.5)));
+			g.drawString("Up Arrow  -  Next Pattern", tlc, (int) (height - (tlc * 12.5)));
+			g.drawString("Down Arrow  -  Last Pattern", tlc, (int) (height - (tlc * 11.5)));
+			g.drawString("Left Click  -  Generates Ant At Mouse", tlc, (int) (height - (tlc * 10.5)));
+			g.drawString("Left Click And Drag  -  Generates Ants That Trail Mouse", tlc, (int) (height - (tlc * 9.5)));
+
+			g.setColor(new Color(Cells.defaultCell.getColor().getRed(), Cells.defaultCell.getColor().getGreen(), Cells.defaultCell.getColor().getBlue(), 200));
+			g.fillRect(tlc - 10, (int) (height - (tlc * 7.5) - 10), tlc * 11, (int) (height - (tlc * 50.5)));
+			
+			g.setColor(Color.red);
+			g.drawString("----- Features -----", tlc, (int) (height - (tlc * 7.5)));
+			g.drawString("A  -  Toggle Automatic Mode", tlc, (int) (height - (tlc * 5.5)));
+			g.drawString("M  -  Toggles Mouse Trail", tlc, (int) (height - (tlc * 4.5)));
+			g.drawString("Z  -  Zoom Out If Enabled", tlc, (int) (height - (tlc * 3.5)));
+			g.drawString("S  -  Toggles Seizure Mode", tlc, (int) (height - (tlc * 2.5)));
+			g.drawString("Q  -  Quit", tlc, (int) (height - (tlc * 1.5)));
 
 		}
 	}
@@ -394,7 +423,7 @@ public class Render {
 	public static void setIsConstant(boolean isConstant) {
 		Render.isConstant = isConstant;
 	}
-	
+
 	public void setAutoClearCount(int i) {
 		autoClearCount = i;
 	}

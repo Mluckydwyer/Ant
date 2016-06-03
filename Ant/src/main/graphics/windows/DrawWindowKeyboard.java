@@ -59,17 +59,29 @@ public class DrawWindowKeyboard extends DrawWindow implements KeyListener {
 			r.cells.setAll(Cells.defaultCell);
 			r.setAutoClearCount(0);
 		}
+		else if (e.getKeyChar() == 't') {
+			if (AntArt.isDebug())
+				System.out.println("T Key Pressed, Toggling Auto Scattered");
+			
+			AntArt.setIsAutoScattered(!AntArt.isAutoScattered());
+		}
 		else if (e.getKeyChar() == 's') {
 			if (AntArt.isDebug())
-				System.out.println("S Key Pressed, Toggling Auto Scattered");
+				System.out.println("S Key Pressed, Toggling Seizure Mode");
 			
 			AntArt.setIsAutoScattered(!AntArt.isAutoScattered());
 		}
 		else if (e.getKeyChar() == 'm') {
 			if (AntArt.isDebug())
-				System.out.println("M Key Pressed, Toggling Constant");
+				System.out.println("M Key Pressed, Toggling Constant Mouse Trail");
 			
 			Render.setIsConstant(!r.isConstant());
+		}
+		else if (e.getKeyChar() == 'h') {
+			if (AntArt.isDebug())
+				System.out.println("H Key Pressed, Toggling HUD");
+			
+			AntArt.setDrawInfo(!AntArt.isDrawInfo());
 		}
 		else if (e.getKeyCode() == KeyEvent.VK_UP) {
 			if (AntArt.isDebug())

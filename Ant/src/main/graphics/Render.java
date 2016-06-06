@@ -57,7 +57,7 @@ public class Render {
 		cells = new Cells(this.width, this.height);
 		generationCount = new BigInteger("0");
 
-		this.lastPattern = Presets.getPresets((isRandomColors && !isRandomPresetColors ? true : false)).get(patternCycle);
+		this.lastPattern = Presets.getPresets((isRandomColors() && !isRandomPresetColors ? true : false)).get(patternCycle);
 		// else this.lastPattern = randomPattern(maxSteps);
 
 		setSettings();
@@ -68,7 +68,7 @@ public class Render {
 			isConstant = false;
 			isSeizure = false;
 			isRandomPattern = true;
-			isRandomColors = true;
+			setRandomColors(true);
 			isRandomPreset = false;
 			isRandomPresetColors = false;
 			isLimited = false;;
@@ -180,26 +180,21 @@ public class Render {
 	}
 
 	private Pattern randomPresetPattern() {
-		return Presets.getRandomPreset(isRandomColors);
+		return Presets.getRandomPreset(isRandomColors());
 	}
 
 	public void cyclePattern(boolean forward) {
 		if (forward)
 			patternCycle++;
-		else
-			patternCycle--;
 
-		if (patternCycle == Presets.getPresets(false).size() + 2)
+		if (patternCycle == Presets.getPresets(false).size() + 1)
 			patternCycle = 0;;
 
 		if (patternCycle == Presets.getPresets(false).size()) {
 			lastPattern = randomPattern(maxSteps);
 		}
-		else if (patternCycle == Presets.getPresets(false).size() + 1) {
-			lastPattern = randomPresetPattern();
-		}
 		else {
-			lastPattern = Presets.getPresets(isRandomColors).get(patternCycle);
+			lastPattern = Presets.getPresets(isRandomColors()).get(patternCycle);
 		}
 	}
 
@@ -259,10 +254,11 @@ public class Render {
 
 			if (AntArt.isAuto())
 				g.drawString("Auto Scattered: " + AntArt.isAutoScattered(), tlc, (int) (tlc * 19.5));
+			
+			g.drawString("Random Colors: " + isRandomColors(), tlc, (int) (tlc * 20.5));
 
-			// TODO TODO TODO
 			g.setColor(new Color(Cells.defaultCell.getColor().getRed(), Cells.defaultCell.getColor().getGreen(), Cells.defaultCell.getColor().getBlue(), 200));
-			g.fillRect(tlc - 10, (int) (height - (tlc * 7.5) - 10), tlc * 11, (int) (height - (tlc * 50.5)));
+			g.fillRect(tlc - 10, (int) (height - (tlc * 20.5) - 10), tlc * 14, (int) (height - (tlc * 45.5)));
 			
 			// Bottom Left Corner
 			g.setColor(Color.magenta);
@@ -272,11 +268,11 @@ public class Render {
 			g.drawString("C  -  Clear All Ants From Screen", tlc, (int) (height - (tlc * 16.5)));
 			g.drawString("H  -  Toggle HUD", tlc, (int) (height - (tlc * 15.5)));
 			g.drawString("D  -  Toggle Debug", tlc, (int) (height - (tlc * 14.5)));
-			g.drawString("T  -  Toggles Seizure Mode", tlc, (int) (height - (tlc * 13.5)));
-			g.drawString("Up Arrow  -  Next Pattern", tlc, (int) (height - (tlc * 12.5)));
-			g.drawString("Down Arrow  -  Last Pattern", tlc, (int) (height - (tlc * 11.5)));
+			g.drawString("T  -  Toggles Trail Mode", tlc, (int) (height - (tlc * 13.5)));
+			g.drawString("R  -  Toggles Random Colors", tlc, (int) (height - (tlc * 12.5)));
+			g.drawString("P  -  Cycle Manual Pattern", tlc, (int) (height - (tlc * 11.5)));
 			g.drawString("Left Click  -  Generates Ant At Mouse", tlc, (int) (height - (tlc * 10.5)));
-			g.drawString("Left Click And Drag  -  Generates Ants That Trail Mouse", tlc, (int) (height - (tlc * 9.5)));
+			g.drawString("Left Click And Drag  -  Trail Mode", tlc, (int) (height - (tlc * 9.5)));
 
 			g.setColor(new Color(Cells.defaultCell.getColor().getRed(), Cells.defaultCell.getColor().getGreen(), Cells.defaultCell.getColor().getBlue(), 200));
 			g.fillRect(tlc - 10, (int) (height - (tlc * 7.5) - 10), tlc * 11, (int) (height - (tlc * 50.5)));
@@ -374,6 +370,7 @@ public class Render {
 		else if (patternCycle == Presets.getPresets(false).size())
 			lastPattern = randomPattern(Presets.getColors().size());
 
+		cyclePattern(false);
 		genNewAnt(lastPattern, x, y);
 	}
 
@@ -420,11 +417,19 @@ public class Render {
 		return isConstant;
 	}
 
-	public static void setIsConstant(boolean isConstant) {
+	public void setConstant(boolean isConstant) {
 		Render.isConstant = isConstant;
 	}
-
+	
 	public void setAutoClearCount(int i) {
 		autoClearCount = i;
+	}
+
+	public boolean isRandomColors() {
+		return isRandomColors;
+	}
+
+	public void setRandomColors(boolean isRandomColors) {
+		Render.isRandomColors = isRandomColors;
 	}
 }

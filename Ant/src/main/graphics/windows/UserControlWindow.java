@@ -14,6 +14,8 @@ import main.graphics.Render;
 
 public class UserControlWindow extends Thread {
 
+	// UNSED CODE TODO
+	
 	protected JFrame frame;
 	private Color backgroundColor = Color.WHITE;
 
@@ -52,8 +54,8 @@ public class UserControlWindow extends Thread {
 
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == 1) Render.setIsConstant(true);
-				else Render.setIsConstant(false);
+				//if (e.getStateChange() == 1) Render.setIsConstant(true);
+				//else Render.setIsConstant(false);
 			}
 		});
 		jp.add(constantAnts);

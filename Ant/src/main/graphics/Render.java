@@ -290,7 +290,7 @@ public class Render {
 			g.drawString("R  -  Toggles Random Colors", tlc, (int) (height - (tlc * 12.5)));
 			g.drawString("P  -  Cycle Manual Pattern", tlc, (int) (height - (tlc * 11.5)));
 			g.drawString("Left Click  -  Generates Ant At Mouse", tlc, (int) (height - (tlc * 10.5)));
-			//g.drawString("Left Click And Drag  -  Trail Mode", tlc, (int) (height - (tlc * 9.5)));
+			g.drawString("Right Click  -  Select Pattern", tlc, (int) (height - (tlc * 9.5)));
 
 			g.setColor(new Color(Cells.defaultCell.getColor().getRed(), Cells.defaultCell.getColor().getGreen(), Cells.defaultCell.getColor().getBlue(), 200));
 			g.fillRect(tlc - 10, (int) (height - (tlc * 6.5) - 10), tlc * 11, (int) (height - (tlc * 50.5)));
@@ -474,4 +474,5 @@ public class Render {
 	public void setLastPattern(Pattern pattern) {
 		lastPattern = pattern;
 	}
+
 }

@@ -61,6 +61,10 @@ public class Pattern {
 		return -1;
 	}
 
+	public List<Step> getSteps() {
+		return steps;
+	}
+	
 	public String toString() {
 		return (!name.isEmpty() ? name : "");
 	}

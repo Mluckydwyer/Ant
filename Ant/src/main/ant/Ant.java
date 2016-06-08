@@ -149,7 +149,7 @@ public class Ant {
 		if(render.containsAnt(this)) {
 			nextColor = next(render.cells.getCell(getX(), getY()).getColor());
 			
-			if (nextColor != null) render.cells.setCell(new Cell(nextColor), (int) prevousPosition.getX(), (int) prevousPosition.getY());
+			if (nextColor != null) render.cells.setCell(new Cell(nextColor, getPattern()), (int) prevousPosition.getX(), (int) prevousPosition.getY());
 		}
 
 		if (prevousPosition.equals(new Point(getX(), getY()))) {

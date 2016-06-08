@@ -75,7 +75,7 @@ public class Render {
 			isLimited = false;;
 
 			GPF = 100000;
-			autoClear = 600;
+			autoClear = 150;
 
 			if (AntArt.isAutoScattered()) {
 				isLimited = true;
@@ -141,6 +141,10 @@ public class Render {
 		if (isSeizure) cells.setDefaultCellColor(randomColor());
 	}
 
+	public void skip() {
+		autoClearCount = autoClear;
+	}
+	
 	public static Color randomColor() {
 		return new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
 	}
@@ -296,11 +300,12 @@ public class Render {
 			g.fillRect(tlc - 10, (int) (height - (tlc * 6.5) - 10), tlc * 11, (int) (height - (tlc * 50.5)));
 
 			g.setColor(Color.red);
-			g.drawString("----- Features -----", tlc, (int) (height - (tlc * 6.5)));
-			g.drawString("A  -  Toggle Automatic Mode", tlc, (int) (height - (tlc * 4.5)));
-			g.drawString("M  -  Toggles Mouse Trail", tlc, (int) (height - (tlc * 3.5)));
-			g.drawString("Z  -  Zoom Out If Enabled", tlc, (int) (height - (tlc * 2.5)));
-			g.drawString("Q  -  Quit", tlc, (int) (height - (tlc * 1.5)));
+			g.drawString("----- Features -----", tlc, (int) (height - (tlc * 7.5)));
+			g.drawString("A  -  Toggle Automatic Mode", tlc, (int) (height - (tlc * 5.5)));
+			g.drawString("M  -  Toggles Mouse Trail", tlc, (int) (height - (tlc * 4.5)));
+			g.drawString("Z  -  Zoom Out If Enabled", tlc, (int) (height - (tlc * 3.5)));
+			g.drawString("Q  -  Quit", tlc, (int) (height - (tlc * 2.5)));
+			if (AntArt.isAuto()) g.drawString("S  -  Skip", tlc, (int) (height - (tlc * 1.5)));
 
 			int trc = tlc + 400;
 			// Top Right

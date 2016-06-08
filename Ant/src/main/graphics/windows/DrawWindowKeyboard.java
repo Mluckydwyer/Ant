@@ -88,7 +88,12 @@ public class DrawWindowKeyboard extends DrawWindow implements KeyListener {
 
 			r.setConstant(!r.isConstant());
 		}
+		else if (e.getKeyChar() == 's') {
+			if (AntArt.isDebug()) System.out.println("S Key Pressed, Skipping Auto Stage");
 
+			r.skip();
+		}
+		
 	}
 
 	@Override

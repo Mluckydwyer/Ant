@@ -28,10 +28,11 @@ public class AntArt {
 	private static int loadWindowLength = 3;
 
 	// Testing Info
-	private static boolean debug = true; // debug or user present
-	private static boolean auto = false; // auto or user controlled
+	private static boolean debug = false; // debug or user present
+	private static boolean auto = true; // auto or user controlled
 	private static boolean autoScattered = false;
 	private static boolean drawInfo = true;
+	private static boolean displayBypass = true;
 
 	// Random / Fun / Secret Settings
 	private static boolean fun = true;
@@ -39,7 +40,13 @@ public class AntArt {
 
 	// ---------- Main Method For Whole Program ----------
 	public static void main(String[] args) {
-		if (!debug) {
+		if (displayBypass) {
+			debug = false;
+			fullScreen = true;
+			auto = true;
+		}
+		
+		if (!debug && !displayBypass) {
 			Scanner s = new Scanner(System.in);
 			String temp;
 			boolean again = true;
@@ -93,7 +100,7 @@ public class AntArt {
 		if (!debug) {
 			if (auto)
 				loadingWindow = false;
-			drawInfo = true;
+			drawInfo = false;
 		}
 
 		// Starts Loading Window

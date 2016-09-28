@@ -81,7 +81,7 @@ public class Render {
 				isLimited = true;
 				limit = 10;
 				GPF = 25000;
-				autoClear = 300;
+				autoClear = 200;
 			}
 		}
 	}
@@ -245,8 +245,8 @@ public class Render {
 		// Info
 		if (AntArt.isDrawInfo()) {
 			int tlc = 15; // Top Left Corner
-			g.setColor(new Color(Cells.defaultCell.getColor().getRed(), Cells.defaultCell.getColor().getGreen(), Cells.defaultCell.getColor().getBlue(), 200));
-			g.fillRect(tlc - 10, tlc, tlc * 11, (int) (tlc * 19.5));
+			g.setColor(new Color(Cells.defaultCell.getColor().getRed(), Cells.defaultCell.getColor().getGreen(), Cells.defaultCell.getColor().getBlue(), 150));
+			g.fillRect(tlc - 10, tlc, tlc * 14, (int) (tlc * 20.5));
 
 			g.setColor(Color.GREEN);
 			g.drawString("----- Info -----", tlc, (int) (tlc * 2.5));
@@ -325,6 +325,11 @@ public class Render {
 					g.drawString(i + ") " + lastPattern.getSteps().get(i - 1), width - trc, (int) (tlc * (6.5 + i)));
 
 			}
+
+		}
+		else {
+			g.setColor(Color.green);
+			g.drawString("Press H for Instructions", 15, (int) (15 * 2.5));
 
 		}
 	}

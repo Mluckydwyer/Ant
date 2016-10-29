@@ -150,7 +150,7 @@ public class DrawWindow extends Thread {
 
 		// Renders Buffer Strategy Things / Direct Pixels
 		render.render();
-		g.drawImage(img, 0, 0, width, height, null);
+		//g.drawImage(img, 0, 0, width, height, null);
 
 		// Renders Graphics Object Things
 		render.renderOverlay(g, lastFPS);

@@ -23,12 +23,12 @@ public class AntArt {
 	private static final String title = "Ant";
 	private static final String version = "v1.5 Beta";
 	private static int FPSCap = -1; // If -1 Then There Is Not Cap Implemented
-	private static boolean fullScreen = false;
+	private static boolean fullScreen = true;
 	private static boolean loadingWindow = true;
 	private static int loadWindowLength = 3;
 
 	// Testing Info
-	private static boolean debug = false; // debug or user present
+	private static boolean debug = true; // debug or user present
 	private static boolean auto = true; // auto or user controlled
 	private static boolean autoScattered = false;
 	private static boolean drawInfo = true;

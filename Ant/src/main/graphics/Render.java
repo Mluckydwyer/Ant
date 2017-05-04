@@ -26,7 +26,7 @@ public class Render {
 	private DrawWindow		dw;
 	public Cells			cells;
 	private Pattern			lastPattern;
-	private int				GPF						= 10000;
+	private int				GPF						= 100000;
 	private boolean			isResize				= false;				// Major
 																			// Lag
 	private BigInteger		generationCount;

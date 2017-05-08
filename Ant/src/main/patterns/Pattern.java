@@ -33,7 +33,7 @@ public class Pattern {
 			return steps.get(findColor(c)).getDirection();
 		}
 		catch(Exception e) {
-			if (AntArt.isDebug()) e.printStackTrace();
+			if (AntArt.isDebug() && !AntArt.isDisplayBypass()) e.printStackTrace();
 		}
 		
 		return null;

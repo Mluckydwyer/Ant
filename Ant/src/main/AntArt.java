@@ -41,7 +41,7 @@ public class AntArt {
 	// ---------- Main Method For Whole Program ----------
 	public static void main(String[] args) {
 		if (displayBypass) {
-			debug = false;
+			//debug = false;
 			fullScreen = true;
 			auto = true;
 		}
@@ -234,6 +234,14 @@ public class AntArt {
 
 	public static void setDrawInfo(boolean b) {
 		drawInfo = b;
+	}
+	
+	public static boolean isDisplayBypass() {
+		return displayBypass;
+	}
+
+	public static void setDisplayBypass(boolean displayBypass) {
+		AntArt.displayBypass = displayBypass;
 	}
 	
 }
